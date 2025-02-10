@@ -20,7 +20,7 @@ class Enemy {
             const xoffset = 65;
             const yoffset = 54;
             const isTileOccupied = this.scene.enemies.some(enemy => enemy.tileOn === tile);
-            return (dx > 3 * xoffset || dy > 3 * yoffset) && !isTileOccupied;
+            return (dx > 1.5 * xoffset || dy > 1.5 * yoffset) && !isTileOccupied;
         });
 
         if (validTiles.length > 0) {
@@ -205,7 +205,7 @@ class Enemy {
 
     knockback() {
         if (this.previousTile) {
-            const isTileOccupied = this.scene.enemies.some(enemy => enemy.tileOn === this.previousTile);
+            const isTileOccupied = this.scene.enemies.some(enemy => enemy.tileOn === this.previousTile) || this.scene.player.tileOn === this.previousTile;
             if (isTileOccupied) {
                 console.log('Cannot knockback, tile is occupied');
                 this.scene.input.enabled = true;

@@ -95,6 +95,7 @@ class Player {
                 this.attackCount = 0; // Reset the attack counter
                 this.scene.input.enabled = true; // Enable input
                 console.log(`Player moved to ${tile.type} tile`);
+                this.scene.events.emit('playerMove'); // Emit player move event
                 this.scene.enemies.forEach(enemy => enemy.moveTowardsPlayer(this.scene.player.tileOn, this.scene.tiles));
             }
         });

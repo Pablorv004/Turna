@@ -12,7 +12,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('playerIdle', { start: 0, end: 11 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -20,7 +19,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('playerIdle', { start: 12, end: 23 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -28,7 +26,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('playerIdle', { start: 24, end: 35 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -36,7 +33,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('playerIdle', { start: 36, end: 39 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -156,7 +152,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('slimeIdle', { start: 0, end: 5 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -164,7 +159,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('slimeIdle', { start: 6, end: 11 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -172,7 +166,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('slimeIdle', { start: 12, end: 17 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -180,7 +173,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('slimeIdle', { start: 18, end: 23 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -296,19 +288,10 @@ export function loadAnimations(scene) {
     });
 
     scene.anims.create({
-        key: 'slimeIdle',
-        frames: scene.anims.generateFrameNumbers('slimeIdle', { start: 0, end: scene.textures.get('slimeIdle').frameTotal - 1 }),
-        frameRate: 5,
-        repeat: -1,
-        yoyo: true
-    });
-
-    scene.anims.create({
         key: 'magmaSlimeIdleFront',
         frames: scene.anims.generateFrameNumbers('magmaSlimeIdle', { start: 0, end: 5 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -316,7 +299,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('magmaSlimeIdle', { start: 6, end: 11 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -324,7 +306,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('magmaSlimeIdle', { start: 12, end: 17 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -332,7 +313,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('magmaSlimeIdle', { start: 18, end: 23 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -365,28 +345,28 @@ export function loadAnimations(scene) {
 
     scene.anims.create({
         key: 'magmaSlimeAttackDown',
-        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 0, end: 9 }),
+        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 0, end: 8 }),
         frameRate: 10,
         repeat: 0
     });
 
     scene.anims.create({
         key: 'magmaSlimeAttackUp',
-        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 10, end: 19 }),
+        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 9, end: 16 }),
         frameRate: 10,
         repeat: 0
     });
 
     scene.anims.create({
         key: 'magmaSlimeAttackLeft',
-        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 20, end: 29 }),
+        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 17, end: 24 }),
         frameRate: 10,
         repeat: 0
     });
 
     scene.anims.create({
         key: 'magmaSlimeAttackRight',
-        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 30, end: 39 }),
+        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 25, end: 31 }),
         frameRate: 10,
         repeat: 0
     });
@@ -452,7 +432,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('skullSlimeIdle', { start: 0, end: 5 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -460,7 +439,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('skullSlimeIdle', { start: 6, end: 11 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -468,7 +446,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('skullSlimeIdle', { start: 12, end: 17 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({
@@ -476,7 +453,6 @@ export function loadAnimations(scene) {
         frames: scene.anims.generateFrameNumbers('skullSlimeIdle', { start: 18, end: 23 }),
         frameRate: 5,
         repeat: -1,
-        yoyo: true
     });
 
     scene.anims.create({

@@ -14,6 +14,7 @@ export function loadImages(scene) {
     scene.load.image('water', 'assets/Tiles/tileWater.png');
     scene.load.image('dirt', 'assets/Tiles/tileDirt.png');
     scene.load.spritesheet('playButton', 'assets/Icons/buttons.png', { frameWidth: 190, frameHeight: 45 });
+    scene.load.image('greyBox', 'assets/Icons/greybox.png');
     scene.load.bitmapFont('pixelfont', 'assets/fonts/minogram_6x10.png', 'assets/fonts/minogram_6x10.xml');
     scene.load.spritesheet('buttons', 'assets/buttonGray.png', { frameWidth: 190, frameHeight: 49 });
     scene.load.spritesheet('swordAttack', 'assets/player/sword_attack/sword_attack_full.png', { frameWidth: 64, frameHeight: 64 });

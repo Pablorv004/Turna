@@ -7,11 +7,14 @@ import BaseSlime from './BaseSlime.js';
 import MagmaSlime from './MagmaSlime.js';
 import SkullSlime from './SkullSlime.js';
 import MainMenu from './mainMenu.js';
+import { getWaveEnemies } from './WaveEnemies.js';
 
 class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
         this.tileOffset = -25; // Constant to store the y value offset for the player and enemies
+        this.waveNumber = 1; // Initialize wave number
+        this.movesUntilNextWave = 5; // Moves required to trigger the next wave
     }
 
     preload() {
@@ -42,9 +45,20 @@ class GameScene extends Phaser.Scene {
         const initialTile = tiles.find(tile => tile.x === 650 - 65 / 2 && tile.y === 400 + 54);
         this.player.moveToTile(initialTile);
 
+        this.add.image(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 240, 'greyBox').setScale(2); // Spawn the grey box in the middle-right of the screen
+
+        this.waveText = this.add.bitmapText(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 300, 'pixelfont', `Wave:`, 28).setOrigin(0.5, 0.5);
+        this.waveNumberText = this.add.bitmapText(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 240, 'pixelfont', `${this.waveNumber}`, 72).setOrigin(0.5, 0.5);
+        this.movesText = this.add.bitmapText(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 195, 'pixelfont', 'Moves until next wave:', 15).setOrigin(0.5, 0.5);
+        this.movesUntilNextWaveText = this.add.bitmapText(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 165, 'pixelfont', `${this.movesUntilNextWave}`, 30).setOrigin(0.5, 0.5);
+
         this.spawnEnemies();
+        this.changeRandomTileToMagical();
 
         this.gameOver = this.gameOver.bind(this); // Bind gameOver method to the scene
+
+        // Listen for player move events
+        this.events.on('playerMove', this.onPlayerMove, this);
     }
 
     update() {
@@ -52,13 +66,7 @@ class GameScene extends Phaser.Scene {
     }
 
     spawnEnemies() {
-        const enemies = [
-            new BaseSlime(this, this.tiles),
-            new BaseSlime(this, this.tiles),
-            new MagmaSlime(this, this.tiles),
-            new MagmaSlime(this, this.tiles),
-            new SkullSlime(this, this.tiles)
-        ];
+        const enemies = getWaveEnemies(this.waveNumber, this);
 
         enemies.forEach((enemy, index) => {
             this.time.delayedCall(index * 100, () => {
@@ -67,6 +75,52 @@ class GameScene extends Phaser.Scene {
                 console.log(enemy);
             });
         });
+    }
+
+    onPlayerMove() {
+        this.movesUntilNextWave--;
+        this.movesUntilNextWaveText.setText(`${this.movesUntilNextWave}`);
+
+        if (this.movesUntilNextWave <= 0) {
+            this.waveNumber++;
+            this.waveNumberText.setText(`${this.waveNumber}`);
+            this.movesUntilNextWave = this.calculateMovesUntilNextWave(this.waveNumber);
+            this.movesUntilNextWaveText.setText(`${this.movesUntilNextWave}`);
+            this.spawnEnemies();
+            this.orderEnemiesByDamage();
+            this.changeRandomTileToMagical();
+        }
+    }
+
+    calculateMovesUntilNextWave(waveNumber) {
+        return Math.floor(6 + Math.pow(waveNumber, 1.25));
+    }
+
+    orderEnemiesByDamage() {
+        this.enemies.sort((a, b) => b.damage - a.damage);
+    }
+
+    changeRandomTileToMagical() {
+        const nonMagicalTiles = this.tiles.filter(tile => tile.type !== 4);
+        if (nonMagicalTiles.length > 0) {
+            const randomTile = nonMagicalTiles[Math.floor(Math.random() * nonMagicalTiles.length)];
+            randomTile.setProperties(4);
+            this.tweens.add({
+                targets: randomTile.sprite,
+                alpha: 0,
+                duration: 100,
+                yoyo: true,
+                onComplete: () => {
+                    randomTile.sprite.setTexture('magical');
+                    this.tweens.add({
+                        targets: randomTile.sprite,
+                        alpha: 1,
+                        duration: 100
+                    });
+                }
+            });
+            console.log(`Tile at (${randomTile.x}, ${randomTile.y}) changed to magical`);
+        }
     }
 
     gameOver() {

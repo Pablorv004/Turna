@@ -31,7 +31,27 @@ class Tile {
             case 1: this.effect = () => console.log('Frozen tile'); break;
             case 2: this.effect = () => console.log('On fire tile'); break;
             case 3: this.effect = () => console.log('Obstructed tile'); break;
-            case 4: this.effect = () => console.log('Magical tile'); break;
+            case 4: 
+                this.effect = () => {
+                    console.log('Magical tile');
+                    this.scene.player.damage += 3;
+                    this.scene.tweens.add({
+                        targets: this.sprite,
+                        alpha: 0,
+                        duration: 100,
+                        yoyo: true,
+                        onComplete: () => {
+                            this.setProperties(0); // Revert to grass tile
+                            this.sprite.setTexture('grass');
+                            this.scene.tweens.add({
+                                targets: this.sprite,
+                                alpha: 1,
+                                duration: 100
+                            });
+                        }
+                    });
+                };
+                break;
             case 5: this.effect = () => console.log('Rock tile'); break;
             case 6: this.effect = () => console.log('Sandy tile'); break;
             case 7: this.effect = () => console.log('Water tile'); break;
