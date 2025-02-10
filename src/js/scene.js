@@ -13,8 +13,6 @@ class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
         this.tileOffset = -25; // Constant to store the y value offset for the player and enemies
-        this.waveNumber = 1; // Initialize wave number
-        this.movesUntilNextWave = 5; // Moves required to trigger the next wave
     }
 
     preload() {
@@ -22,6 +20,7 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
+        this.resetGame();
         const bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
         bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
@@ -32,9 +31,8 @@ class GameScene extends Phaser.Scene {
         console.log(player);
 
         loadAnimations(this);
-
         const tiles = loadTiles(this);
-
+        
         const playerSprite = this.add.sprite(650 - 65 * 0.5, 400 + 54 + this.tileOffset, 'playerIdle'); // Spawn player on the center tile with offset
         playerSprite.setScale(2); // Scale the player sprite upwards
         playerSprite.play('idleDown'); // Set initial idle animation to looking down
@@ -45,12 +43,38 @@ class GameScene extends Phaser.Scene {
         const initialTile = tiles.find(tile => tile.x === 650 - 65 / 2 && tile.y === 400 + 54);
         this.player.moveToTile(initialTile);
 
-        this.add.image(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 240, 'greyBox').setScale(2); // Spawn the grey box in the middle-right of the screen
+        this.add.image(this.sys.game.config.width - 110, 150, 'greyBox').setScale(1.5); // Spawn the grey box in the middle-right of the screen
 
-        this.waveText = this.add.bitmapText(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 300, 'pixelfont', `Wave:`, 28).setOrigin(0.5, 0.5);
-        this.waveNumberText = this.add.bitmapText(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 240, 'pixelfont', `${this.waveNumber}`, 72).setOrigin(0.5, 0.5);
-        this.movesText = this.add.bitmapText(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 195, 'pixelfont', 'Moves until next wave:', 15).setOrigin(0.5, 0.5);
-        this.movesUntilNextWaveText = this.add.bitmapText(this.sys.game.config.width - 150, this.sys.game.config.height / 2 - 165, 'pixelfont', `${this.movesUntilNextWave}`, 30).setOrigin(0.5, 0.5);
+        this.add.image(this.sys.game.config.width - 110, 350, 'greyBox').setScale(1.5); // Spawn the grey box in the middle-right of the screen
+
+        this.waveText = this.add.bitmapText(this.sys.game.config.width - 110, 100, 'pixelfont', `Wave`, 28).setOrigin(0.5, 0.5);
+        this.waveNumberText = this.add.bitmapText(this.sys.game.config.width - 110, 160, 'pixelfont', `${this.waveNumber}`, 72).setOrigin(0.5, 0.5);
+        this.movesText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 175, 'pixelfont', 'Next wave in', 20).setOrigin(0.5, 0.5);
+        this.movesUntilNextWaveText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 125, 'pixelfont', `${this.movesUntilNextWave}`, 60).setOrigin(0.5, 0.5);
+        this.movesTextMoves = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 85, 'pixelfont', 'moves', 24).setOrigin(0.5, 0.5);
+        
+        // Add brownBox to the top left
+        this.add.image(110, 150, 'brownBox').setScale(1.5).setOrigin(0.5, 0.5);
+
+        // Add pairs of roundDamagedBrown and brownButton below the brownBox
+        for (let i = 0; i < 5; i++) {
+            this.add.image(50, 300 + i * 70, 'roundDamagedBrown').setScale(0.5).setOrigin(0.5, 0.5);
+            this.add.image(150, 300 + i * 70, 'brownButton').setScale(1).setOrigin(0.5, 0.5);
+        }
+        //Add bannerHanging to the top middle
+        this.add.image(this.sys.game.config.width / 2, 50, 'bannerHanging').setScale(0.6).setOrigin(0.5, 0.5);
+        // Add text indicating who's turn it is in the banner
+        this.turnText = this.add.bitmapText(this.sys.game.config.width / 2, 56, 'pixelfont', 'Player\'s turn', 24).setOrigin(0.5, 0.5);
+
+        // Add decorative player object
+        const decorativePlayer = this.add.sprite(110, 150, 'playerIdle');
+        decorativePlayer.setScale(3);
+        decorativePlayer.play('idleDown');
+
+        // Copy any of the animations the player does
+        this.playerSprite.on('animationupdate', (animation, frame) => {
+            decorativePlayer.play(animation.key, true);
+        });
 
         this.spawnEnemies();
         this.changeRandomTileToMagical();
@@ -61,8 +85,16 @@ class GameScene extends Phaser.Scene {
         this.events.on('playerMove', this.onPlayerMove, this);
     }
 
+    resetGame() {
+        this.waveNumber = 1; // Reset wave number
+        this.movesUntilNextWave = 5; // Reset moves required to trigger the next wave
+    }
+
     update() {
         // Game logic goes here
+        if (!this.player.isMoving) {
+            this.turnText.setText(this.input.enabled ? 'Your turn' : 'Enemies turn');
+        }
     }
 
     spawnEnemies() {
@@ -75,6 +107,7 @@ class GameScene extends Phaser.Scene {
                 console.log(enemy);
             });
         });
+        enemies.sort((a, b) => b.damage - a.damage);
     }
 
     onPlayerMove() {
@@ -157,7 +190,7 @@ class GameScene extends Phaser.Scene {
             alpha: 1,
             duration: 1000
         });
-        this.input.enabled = false;
+        this.input.enabled = true;
         const gameOverText = this.add.bitmapText(width / 2, height / 2, 'pixelfont', 'Game Over', 40);
         gameOverText.setOrigin(0.5, 0.5);
         gameOverText.alpha = 0;

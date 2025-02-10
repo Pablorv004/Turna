@@ -15,6 +15,11 @@ export function loadImages(scene) {
     scene.load.image('dirt', 'assets/Tiles/tileDirt.png');
     scene.load.spritesheet('playButton', 'assets/Icons/buttons.png', { frameWidth: 190, frameHeight: 45 });
     scene.load.image('greyBox', 'assets/Icons/greybox.png');
+    scene.load.image('brownBox', 'assets/Icons/panel_brown_dark_corners_b.png');
+    scene.load.image('brownButton', 'assets/Icons/button_brown.png');
+    scene.load.image('bannerHanging', 'assets/Icons/banner_hanging.png');
+    scene.load.image('goldStar', 'assets/Icons/gold_star.png');
+    scene.load.image('roundDamagedBrown', 'assets/Icons/round_damaged_brown.png');
     scene.load.bitmapFont('pixelfont', 'assets/fonts/minogram_6x10.png', 'assets/fonts/minogram_6x10.xml');
     scene.load.spritesheet('buttons', 'assets/buttonGray.png', { frameWidth: 190, frameHeight: 49 });
     scene.load.spritesheet('swordAttack', 'assets/player/sword_attack/sword_attack_full.png', { frameWidth: 64, frameHeight: 64 });

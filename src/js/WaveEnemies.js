@@ -25,5 +25,5 @@ export function getWaveEnemies(waveNumber, scene) {
         enemies.push(skullSlime);
     }
 
-    return enemies.sort((a, b) => b.damage - a.damage);
+    return enemies;
 }
