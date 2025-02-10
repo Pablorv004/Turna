@@ -187,7 +187,6 @@ class Enemy {
                 y: this.tileOn.y + this.scene.tileOffset,
                 duration: 500,
                 onComplete: () => {
-                    this.moveToTile(this.tileOn);
                     this.sprite.play(idleAnimation);
                 }
             });
