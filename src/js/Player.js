@@ -7,7 +7,7 @@ class Player {
         this.range = 1; // Default jump distance
         this.isMoving = false; // Flag to track if the player is moving
         this.attackCount = 0; // Counter to track the number of attacks
-        this.hp = 1; // Player's health points
+        this.hp = 10; // Player's health points
         this.lastDirection = 'down'; // Track the last direction the player walked
     }
 
