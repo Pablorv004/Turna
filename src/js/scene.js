@@ -87,7 +87,6 @@ class GameScene extends Phaser.Scene {
             this.movesUntilNextWave = this.calculateMovesUntilNextWave(this.waveNumber);
             this.movesUntilNextWaveText.setText(`${this.movesUntilNextWave}`);
             this.spawnEnemies();
-            this.orderEnemiesByDamage();
             this.changeRandomTileToMagical();
         }
     }
@@ -96,12 +95,8 @@ class GameScene extends Phaser.Scene {
         return Math.floor(6 + Math.pow(waveNumber, 1.25));
     }
 
-    orderEnemiesByDamage() {
-        this.enemies.sort((a, b) => b.damage - a.damage);
-    }
-
     changeRandomTileToMagical() {
-        const nonMagicalTiles = this.tiles.filter(tile => tile.type !== 4);
+        const nonMagicalTiles = this.tiles.filter(tile => tile.type !== 4 && tile !== this.player.tileOn);
         if (nonMagicalTiles.length > 0) {
             const randomTile = nonMagicalTiles[Math.floor(Math.random() * nonMagicalTiles.length)];
             randomTile.setProperties(4);

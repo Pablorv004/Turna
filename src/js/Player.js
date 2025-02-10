@@ -156,6 +156,12 @@ class Player {
             this.setIdleAnimation();
             this.isMoving = false; // Reset the moving flag
             this.attackCount++; // Increment the attack counter
+
+            // Check if the player has nowhere to move
+            const canMove = this.scene.tiles.some(tile => this.canMoveToTile(tile, this.scene.tiles));
+            if (!canMove) {
+                this.scene.events.emit('playerMove'); // Emit player move event to skip turn
+            }
         });
     }
 
