@@ -39,6 +39,11 @@ function preload() {
     this.load.spritesheet('magmaSlimeAttack', 'assets/Enemies/Slime3/Attack/Slime3_attack_full.png', { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('magmaSlimeHurt', 'assets/Enemies/Slime3/Hurt/Slime3_hurt_full.png', { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('magmaSlimeDeath', 'assets/Enemies/Slime3/Death/Slime3_death_full.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('skullSlimeIdle', 'assets/Enemies/Slime2/Idle/Slime2_idle_full.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('skullSlimeWalk', 'assets/Enemies/Slime2/Walk/Slime2_walk_full.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('skullSlimeAttack', 'assets/Enemies/Slime2/Attack/Slime2_attack_full.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('skullSlimeHurt', 'assets/Enemies/Slime2/Hurt/Slime2_hurt_full.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('skullSlimeDeath', 'assets/Enemies/Slime2/Death/Slime2_death_full.png', { frameWidth: 64, frameHeight: 64 });
 }
 
 function create() {
@@ -462,6 +467,18 @@ function create() {
 
     this.tiles = tiles; // Store tiles array in the scene
 
+    // Add fade-in effect to tiles
+    tiles.forEach((tile, index) => {
+        tile.sprite.alpha = 0; // Set initial alpha to 0 for fade-in effect
+        this.time.delayedCall(index * 2, () => {
+            this.tweens.add({
+                targets: tile.sprite,
+                alpha: 1,
+                duration: 500
+            });
+        });
+    });
+
     const playerSprite = this.add.sprite(centerx - xoffset * 0.5, centery + yoffset + tileOffset, 'playerIdle'); // Spawn player on the center tile with offset
     playerSprite.setScale(2); // Scale the player sprite upwards
     playerSprite.play('idleDown'); // Set initial idle animation to looking down
@@ -624,21 +641,169 @@ function create() {
         repeat: 0
     });
 
-    const baseSlime1 = new BaseSlime(this, tiles);
-    this.baseSlime1 = baseSlime1; // Make baseSlime1 accessible in the scene
-    console.log(baseSlime1);
+    this.anims.create({
+        key: 'skullSlimeIdleFront',
+        frames: this.anims.generateFrameNumbers('skullSlimeIdle', { start: 0, end: 5 }),
+        frameRate: 5,
+        repeat: -1,
+        yoyo: true
+    });
 
-    const baseSlime2 = new BaseSlime(this, tiles);
-    this.baseSlime2 = baseSlime2; // Make baseSlime2 accessible in the scene
-    console.log(baseSlime2);
+    this.anims.create({
+        key: 'skullSlimeIdleBack',
+        frames: this.anims.generateFrameNumbers('skullSlimeIdle', { start: 6, end: 11 }),
+        frameRate: 5,
+        repeat: -1,
+        yoyo: true
+    });
 
-    const magmaSlime1 = new MagmaSlime(this, tiles);
-    this.magmaSlime1 = magmaSlime1; // Make magmaSlime1 accessible in the scene
-    console.log(magmaSlime1);
+    this.anims.create({
+        key: 'skullSlimeIdleLeft',
+        frames: this.anims.generateFrameNumbers('skullSlimeIdle', { start: 12, end: 17 }),
+        frameRate: 5,
+        repeat: -1,
+        yoyo: true
+    });
 
-    this.enemies.push(baseSlime1); // Add baseSlime1 to the enemies array
-    this.enemies.push(baseSlime2); // Add baseSlime2 to the enemies array
-    this.enemies.push(magmaSlime1); // Add magmaSlime1 to the enemies array
+    this.anims.create({
+        key: 'skullSlimeIdleRight',
+        frames: this.anims.generateFrameNumbers('skullSlimeIdle', { start: 18, end: 23 }),
+        frameRate: 5,
+        repeat: -1,
+        yoyo: true
+    });
+
+    this.anims.create({
+        key: 'skullSlimeWalkDown',
+        frames: this.anims.generateFrameNumbers('skullSlimeWalk', { start: 0, end: 7 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'skullSlimeWalkUp',
+        frames: this.anims.generateFrameNumbers('skullSlimeWalk', { start: 8, end: 15 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'skullSlimeWalkLeft',
+        frames: this.anims.generateFrameNumbers('skullSlimeWalk', { start: 16, end: 23 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'skullSlimeWalkRight',
+        frames: this.anims.generateFrameNumbers('skullSlimeWalk', { start: 24, end: 31 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'skullSlimeAttackDown',
+        frames: this.anims.generateFrameNumbers('skullSlimeAttack', { start: 0, end: 9 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeAttackUp',
+        frames: this.anims.generateFrameNumbers('skullSlimeAttack', { start: 10, end: 19 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeAttackLeft',
+        frames: this.anims.generateFrameNumbers('skullSlimeAttack', { start: 20, end: 29 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeAttackRight',
+        frames: this.anims.generateFrameNumbers('skullSlimeAttack', { start: 30, end: 39 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeHurtDown',
+        frames: this.anims.generateFrameNumbers('skullSlimeHurt', { start: 0, end: 4 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeHurtUp',
+        frames: this.anims.generateFrameNumbers('skullSlimeHurt', { start: 5, end: 9 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeHurtLeft',
+        frames: this.anims.generateFrameNumbers('skullSlimeHurt', { start: 10, end: 14 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeHurtRight',
+        frames: this.anims.generateFrameNumbers('skullSlimeHurt', { start: 15, end: 19 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeDeathDown',
+        frames: this.anims.generateFrameNumbers('skullSlimeDeath', { start: 0, end: 9 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeDeathUp',
+        frames: this.anims.generateFrameNumbers('skullSlimeDeath', { start: 10, end: 19 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeDeathLeft',
+        frames: this.anims.generateFrameNumbers('skullSlimeDeath', { start: 20, end: 29 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    this.anims.create({
+        key: 'skullSlimeDeathRight',
+        frames: this.anims.generateFrameNumbers('skullSlimeDeath', { start: 30, end: 39 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    const spawnEnemies = () => {
+        const enemies = [
+            new BaseSlime(this, tiles),
+            new BaseSlime(this, tiles),
+            new MagmaSlime(this, tiles),
+            new MagmaSlime(this, tiles),
+            new SkullSlime(this, tiles)
+        ];
+
+        enemies.forEach((enemy, index) => {
+            this.time.delayedCall(index * 100, () => {
+                enemy.spawn();
+                this.enemies.push(enemy);
+                console.log(enemy);
+            });
+        });
+    };
+
+    spawnEnemies();
 
     this.gameOver = gameOver.bind(this); // Bind gameOver method to the scene
 }

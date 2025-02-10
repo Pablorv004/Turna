@@ -3,10 +3,10 @@ export const yoffset = 54;
 export const playerTileOffset = -25;
 export const center = 500;
 
-export const gameConfig = {
+export const config = {
     type: Phaser.AUTO,
-    width: 1800,
-    height: 1014,
+    width: 1247,
+    height: 968,
     pixelArt: true,
     scene: {
         preload: preload,

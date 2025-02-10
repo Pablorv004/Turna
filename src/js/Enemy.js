@@ -11,7 +11,6 @@ class Enemy {
         this.jumpDistance = textures.jumpDistance;
         this.isMovingToTile = null;
         this.sprite = null;
-        this.spawn();
     }
 
     spawn() {
@@ -27,10 +26,18 @@ class Enemy {
         if (validTiles.length > 0) {
             const spawnTile = validTiles[Math.floor(Math.random() * validTiles.length)];
             this.moveToTile(spawnTile);
+            this.tileOn = spawnTile;
             this.sprite = this.scene.add.sprite(spawnTile.x, spawnTile.y + tileOffset + 10, this.textures.idleFront);
             this.sprite.setScale(2);
             this.sprite.play(this.textures.idleFront);
             this.sprite.setDepth(1);
+            this.sprite.alpha = 0; // Set initial alpha to 0 for fade-in effect
+
+            this.scene.tweens.add({
+                targets: this.sprite,
+                alpha: 1,
+                duration: 1000
+            });
         } else {
             console.error('No valid spawn location for enemy');
         }
