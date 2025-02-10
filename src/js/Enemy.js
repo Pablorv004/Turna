@@ -27,7 +27,7 @@ class Enemy {
             const spawnTile = validTiles[Math.floor(Math.random() * validTiles.length)];
             this.moveToTile(spawnTile);
             this.tileOn = spawnTile;
-            this.sprite = this.scene.add.sprite(spawnTile.x, spawnTile.y + tileOffset + 10, this.textures.idleFront);
+            this.sprite = this.scene.add.sprite(spawnTile.x, spawnTile.y + this.scene.tileOffset + 10, this.textures.idleFront);
             this.sprite.setScale(2);
             this.sprite.play(this.textures.idleFront);
             this.sprite.setDepth(1);
@@ -95,7 +95,7 @@ class Enemy {
                         this.scene.tweens.add({
                             targets: this.sprite,
                             x: targetTile.x,
-                            y: targetTile.y + tileOffset,
+                            y: targetTile.y + this.scene.tileOffset,
                             duration: 500,
                             onComplete: () => {
                                 this.sprite.play(idleAnimation);
@@ -184,9 +184,10 @@ class Enemy {
             this.scene.tweens.add({
                 targets: this.sprite,
                 x: this.tileOn.x,
-                y: this.tileOn.y + tileOffset,
+                y: this.tileOn.y + this.scene.tileOffset,
                 duration: 500,
                 onComplete: () => {
+                    this.moveToTile(this.tileOn);
                     this.sprite.play(idleAnimation);
                 }
             });
@@ -209,6 +210,32 @@ class Enemy {
             if (isTileOccupied) {
                 console.log('Cannot knockback, tile is occupied');
                 this.scene.input.enabled = true;
+                const dx = this.previousTile.x - this.tileOn.x;
+            const dy = this.previousTile.y - this.tileOn.y;
+
+            let hurtAnimation, idleAnimation;
+            if (Math.abs(dy) > Math.abs(dx)) {
+                if (dy > 0) {
+                    hurtAnimation = this.textures.hurtDown;
+                    idleAnimation = this.textures.idleFront;
+                } else {
+                    hurtAnimation = this.textures.hurtUp;
+                    idleAnimation = this.textures.idleBack;
+                }
+            } else {
+                if (dx > 0) {
+                    hurtAnimation = this.textures.hurtRight;
+                    idleAnimation = this.textures.idleRight;
+                } else {
+                    hurtAnimation = this.textures.hurtLeft;
+                    idleAnimation = this.textures.idleLeft;
+                }
+            }
+
+            this.sprite.play(hurtAnimation);
+            this.sprite.once('animationcomplete', () => {
+                this.sprite.play(idleAnimation);
+            });
                 return;
             }
 
@@ -238,7 +265,7 @@ class Enemy {
             this.scene.tweens.add({
                 targets: this.sprite,
                 x: this.previousTile.x,
-                y: this.previousTile.y + tileOffset,
+                y: this.previousTile.y + this.scene.tileOffset,
                 duration: 500,
                 onComplete: () => {
                     this.moveToTile(this.previousTile);
@@ -286,3 +313,5 @@ class Enemy {
         });
     }
 }
+
+export default Enemy;

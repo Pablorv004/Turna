@@ -1,3 +1,5 @@
+import Enemy from './Enemy.js';
+
 class BaseSlime extends Enemy {
     constructor(scene, tiles) {
         super(scene, tiles, {
@@ -28,3 +30,5 @@ class BaseSlime extends Enemy {
         });
     }
 }
+
+export default BaseSlime;

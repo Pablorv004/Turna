@@ -1,0 +1,32 @@
+export function loadImages(scene) {
+    scene.load.image('bg', 'assets/bg.png');
+    scene.load.spritesheet('playerIdle', 'assets/player/sword_idle/sword_idle_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('slimeIdle', 'assets/Enemies/Slime1/Idle/Slime1_idle_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('swordWalk', 'assets/player/sword_walk/sword_walk_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('slimeWalk', 'assets/Enemies/Slime1/Walk/slime1_walk_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.image('grass', 'assets/Tiles/tileGrass.png');
+    scene.load.image('frozen', 'assets/Tiles/tileSnow.png');
+    scene.load.image('onFire', 'assets/Tiles/tileLava.png');
+    scene.load.image('obstructed', 'assets/Tiles/tileAutumn.png');
+    scene.load.image('magical', 'assets/Tiles/tileMagic.png');
+    scene.load.image('rock', 'assets/Tiles/tileRock.png');
+    scene.load.image('sandy', 'assets/Tiles/tileSand.png');
+    scene.load.image('water', 'assets/Tiles/tileWater.png');
+    scene.load.image('dirt', 'assets/Tiles/tileDirt.png');
+    scene.load.spritesheet('swordAttack', 'assets/player/sword_attack/sword_attack_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('slimeDeath', 'assets/Enemies/Slime1/Death/Slime1_Death_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('slimeHurt', 'assets/Enemies/Slime1/Hurt/Slime1_Hurt_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('slimeAttack', 'assets/Enemies/Slime1/Attack/Slime1_attack_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('playerHurt', 'assets/player/sword_hurt/sword_Hurt_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('playerDeath', 'assets/player/sword_death/sword_death_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('magmaSlimeIdle', 'assets/Enemies/Slime3/Idle/Slime3_idle_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('magmaSlimeWalk', 'assets/Enemies/Slime3/Walk/Slime3_walk_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('magmaSlimeAttack', 'assets/Enemies/Slime3/Attack/Slime3_attack_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('magmaSlimeHurt', 'assets/Enemies/Slime3/Hurt/Slime3_hurt_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('magmaSlimeDeath', 'assets/Enemies/Slime3/Death/Slime3_death_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('skullSlimeIdle', 'assets/Enemies/Slime2/Idle/Slime2_idle_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('skullSlimeWalk', 'assets/Enemies/Slime2/Walk/Slime2_walk_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('skullSlimeAttack', 'assets/Enemies/Slime2/Attack/Slime2_attack_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('skullSlimeHurt', 'assets/Enemies/Slime2/Hurt/Slime2_hurt_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('skullSlimeDeath', 'assets/Enemies/Slime2/Death/Slime2_death_full.png', { frameWidth: 64, frameHeight: 64 });
+}

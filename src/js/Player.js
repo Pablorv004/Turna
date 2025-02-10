@@ -53,7 +53,7 @@ class Player {
 
         if (!this.tileOn) {
             this.tileOn = tile;
-            this.scene.playerSprite.setPosition(tile.x + 2, tile.y + tileOffset);
+            this.scene.playerSprite.setPosition(tile.x + 2, tile.y + this.scene.tileOffset);
             this.setIdleAnimation();
             console.log(`Player moved to ${tile.type} tile`);
             return;
@@ -86,7 +86,7 @@ class Player {
         this.scene.tweens.add({
             targets: this.scene.playerSprite,
             x: tile.x + 2,
-            y: tile.y + tileOffset,
+            y: tile.y + this.scene.tileOffset,
             duration: 500,
             onComplete: () => {
                 this.setIdleAnimation();
@@ -194,3 +194,5 @@ class Player {
         return false;
     }
 }
+
+export default Player;
