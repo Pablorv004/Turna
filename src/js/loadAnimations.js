@@ -509,28 +509,28 @@ export function loadAnimations(scene) {
 
     scene.anims.create({
         key: 'skullSlimeAttackDown',
-        frames: scene.anims.generateFrameNumbers('skullSlimeAttack', { start: 0, end: 9 }),
+        frames: scene.anims.generateFrameNumbers('skullSlimeAttack', { start: 0, end: 10 }),
         frameRate: 10,
         repeat: 0
     });
 
     scene.anims.create({
         key: 'skullSlimeAttackUp',
-        frames: scene.anims.generateFrameNumbers('skullSlimeAttack', { start: 10, end: 19 }),
+        frames: scene.anims.generateFrameNumbers('skullSlimeAttack', { start: 11, end: 21 }),
         frameRate: 10,
         repeat: 0
     });
 
     scene.anims.create({
         key: 'skullSlimeAttackLeft',
-        frames: scene.anims.generateFrameNumbers('skullSlimeAttack', { start: 20, end: 29 }),
+        frames: scene.anims.generateFrameNumbers('skullSlimeAttack', { start: 22, end: 32 }),
         frameRate: 10,
         repeat: 0
     });
 
     scene.anims.create({
         key: 'skullSlimeAttackRight',
-        frames: scene.anims.generateFrameNumbers('skullSlimeAttack', { start: 30, end: 39 }),
+        frames: scene.anims.generateFrameNumbers('skullSlimeAttack', { start: 33, end: 43 }),
         frameRate: 10,
         repeat: 0
     });

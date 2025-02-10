@@ -6,6 +6,7 @@ import Tile from './Tile.js';
 import BaseSlime from './BaseSlime.js';
 import MagmaSlime from './MagmaSlime.js';
 import SkullSlime from './SkullSlime.js';
+import MainMenu from './mainMenu.js';
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -108,15 +109,32 @@ class GameScene extends Phaser.Scene {
             duration: 1000
         });
         this.input.enabled = false;
-        const gameOverText = this.add.text(width / 2, height / 2, 'Game Over', {
-            fontSize: '64px',
-            fill: '#ffffff'
-        });
+        const gameOverText = this.add.bitmapText(width / 2, height / 2, 'pixelfont', 'Game Over', 40);
         gameOverText.setOrigin(0.5, 0.5);
         gameOverText.alpha = 0;
 
         this.tweens.add({
             targets: gameOverText,
+            alpha: 1,
+            duration: 1000
+        });
+
+        // Add Retry button
+        const retryButton = this.add.sprite(width / 2, height / 2 + 50, 'playButton', 3).setInteractive();
+        const retryText = this.add.bitmapText(width / 2 - 23, height / 2 + 40, 'pixelfont', 'Retry', 20);
+        retryButton.on('pointerdown', () => {
+            this.scene.restart();
+        });
+
+        // Add Main Menu button
+        const mainMenuButton = this.add.sprite(width / 2, height / 2 + 100, 'playButton', 1).setInteractive();
+        const mainMenuText = this.add.bitmapText(width / 2 - 50, height / 2 + 90, 'pixelfont', 'Main Menu', 20);
+        mainMenuButton.on('pointerdown', () => {
+            this.scene.start('MainMenu');
+        });
+
+        this.tweens.add({
+            targets: [retryButton, retryText, mainMenuButton, mainMenuText],
             alpha: 1,
             duration: 1000
         });

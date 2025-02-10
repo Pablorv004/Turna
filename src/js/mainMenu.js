@@ -4,23 +4,27 @@ class MainMenu extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('title', 'assets/title.png');
-        this.load.image('playButton', 'assets/playButton.png');
+        this.load.image('bg', 'assets/bg.png');
+        this.load.image('title', 'assets/Icons/turnalogo.png');
+        this.load.spritesheet('playButton', 'assets/Icons/buttons.png', { frameWidth: 190, frameHeight: 46 });
+        this.load.bitmapFont('pixelfont', 'assets/fonts/minogram_6x10.png', 'assets/fonts/minogram_6x10.xml');
     }
 
     create() {
         const width = this.sys.game.config.width;
         const height = this.sys.game.config.height;
 
-        const title = this.add.image(width / 2, height / 2 - 100, 'title');
-        title.setScale(2);
+        const bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
 
-        const playButton = this.add.image(width / 2, height / 2 + 100, 'playButton').setInteractive();
-        playButton.setScale(2);
-
+        const title = this.add.image(width / 2, height / 2 - 300, 'title');
+        title.setScale(0.3);
+        
+        const playButton = this.add.sprite(width / 2, height / 2, 'playButton', 1).setInteractive();
+        const playText = this.add.bitmapText(width / 2 - 23, height / 2 - 10, 'pixelfont', 'Play', 20);
         playButton.on('pointerdown', () => {
+            playButton.setFrame(0);
             this.tweens.add({
-                targets: [title, playButton],
+                targets: [title, playButton, bg, playText],
                 alpha: 0,
                 duration: 1000,
                 onComplete: () => {
@@ -30,3 +34,5 @@ class MainMenu extends Phaser.Scene {
         });
     }
 }
+
+export default MainMenu;

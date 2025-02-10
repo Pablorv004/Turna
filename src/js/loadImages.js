@@ -13,6 +13,9 @@ export function loadImages(scene) {
     scene.load.image('sandy', 'assets/Tiles/tileSand.png');
     scene.load.image('water', 'assets/Tiles/tileWater.png');
     scene.load.image('dirt', 'assets/Tiles/tileDirt.png');
+    scene.load.spritesheet('playButton', 'assets/Icons/buttons.png', { frameWidth: 190, frameHeight: 45 });
+    scene.load.bitmapFont('pixelfont', 'assets/fonts/minogram_6x10.png', 'assets/fonts/minogram_6x10.xml');
+    scene.load.spritesheet('buttons', 'assets/buttonGray.png', { frameWidth: 190, frameHeight: 49 });
     scene.load.spritesheet('swordAttack', 'assets/player/sword_attack/sword_attack_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('slimeDeath', 'assets/Enemies/Slime1/Death/Slime1_Death_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('slimeHurt', 'assets/Enemies/Slime1/Hurt/Slime1_Hurt_full.png', { frameWidth: 64, frameHeight: 64 });
