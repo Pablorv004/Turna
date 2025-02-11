@@ -98,16 +98,16 @@ class GameScene extends Phaser.Scene {
     }
 
     spawnEnemies() {
-        const enemies = getWaveEnemies(this.waveNumber, this);
+        const newEnemies = getWaveEnemies(this.waveNumber, this);
 
-        enemies.forEach((enemy, index) => {
+        newEnemies.forEach((enemy, index) => {
             this.time.delayedCall(index * 100, () => {
                 enemy.spawn();
                 this.enemies.push(enemy);
                 console.log(enemy);
             });
         });
-        enemies.sort((a, b) => b.damage - a.damage);
+        this.enemies.sort((a, b) => b.damage - a.damage);
     }
 
     onPlayerMove() {

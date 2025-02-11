@@ -352,21 +352,21 @@ export function loadAnimations(scene) {
 
     scene.anims.create({
         key: 'magmaSlimeAttackUp',
-        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 9, end: 16 }),
+        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 9, end: 17 }),
         frameRate: 10,
         repeat: 0
     });
 
     scene.anims.create({
         key: 'magmaSlimeAttackLeft',
-        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 17, end: 24 }),
+        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 18, end: 26 }),
         frameRate: 10,
         repeat: 0
     });
 
     scene.anims.create({
         key: 'magmaSlimeAttackRight',
-        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 25, end: 31 }),
+        frames: scene.anims.generateFrameNumbers('magmaSlimeAttack', { start: 27, end: 35 }),
         frameRate: 10,
         repeat: 0
     });

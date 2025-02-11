@@ -3,7 +3,7 @@ import Enemy from './Enemy.js';
 class SkullSlime extends Enemy {
     constructor(scene, tiles) {
         super(scene, tiles, {
-            hp: 10,
+            hp: 15,
             damage: 100,
             range: 1,
             jumpDistance: 1,

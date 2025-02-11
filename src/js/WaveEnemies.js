@@ -7,7 +7,7 @@ export function getWaveEnemies(waveNumber, scene) {
     const baseSlimeCount = Math.min(waveNumber, 5 - waveNumber > 0 ? 5 - waveNumber : 0);
     const magmaSlimeCount = Math.min(waveNumber - 2, 10 - waveNumber > 0 ? 10 - waveNumber : 0);
     const skullSlimeCount = Math.max(0, waveNumber - 5);
-    const additionalHP = Math.floor(waveNumber / 2) * 5;
+    const additionalHP = Math.floor(waveNumber / 2) * 2;
 
     for (let i = 0; i < baseSlimeCount; i++) {
         const baseSlime = new BaseSlime(scene, scene.tiles);
