@@ -1,9 +1,16 @@
 export function loadImages(scene) {
     scene.load.image('bg', 'assets/bg.png');
+
+    //PLAYER
     scene.load.spritesheet('playerIdle', 'assets/player/sword_idle/sword_idle_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('slimeIdle', 'assets/Enemies/Slime1/Idle/Slime1_idle_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('swordWalk', 'assets/player/sword_walk/sword_walk_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('slimeWalk', 'assets/Enemies/Slime1/Walk/slime1_walk_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('playerHurt', 'assets/player/sword_hurt/sword_Hurt_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('playerDeath', 'assets/player/sword_death/sword_death_full.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('swordAttack', 'assets/player/sword_attack/sword_attack_full.png', { frameWidth: 64, frameHeight: 64 });
+    
+    //TILES
     scene.load.image('grass', 'assets/Tiles/tileGrass.png');
     scene.load.image('frozen', 'assets/Tiles/tileSnow.png');
     scene.load.image('onFire', 'assets/Tiles/tileLava.png');
@@ -13,6 +20,8 @@ export function loadImages(scene) {
     scene.load.image('sandy', 'assets/Tiles/tileSand.png');
     scene.load.image('water', 'assets/Tiles/tileWater.png');
     scene.load.image('dirt', 'assets/Tiles/tileDirt.png');
+
+    //UI
     scene.load.spritesheet('playButton', 'assets/Icons/buttons.png', { frameWidth: 190, frameHeight: 45 });
     scene.load.image('greyBox', 'assets/Icons/greybox.png');
     scene.load.image('brownBox', 'assets/Icons/panel_brown_dark_corners_b.png');
@@ -26,17 +35,21 @@ export function loadImages(scene) {
     scene.load.image('damage', 'assets/Icons/damage.png');
     scene.load.image('range', 'assets/Icons/range.png');
     scene.load.image('speed', 'assets/Icons/speed.png');
+    scene.load.image('book', 'assets/Icons/book.png');
+    scene.load.spritesheet('manual_open', 'assets/Icons/manual_open.png', { frameWidth: 640/4, frameHeight: 90 });
+    scene.load.image('help', 'assets/Icons/help.png');
     scene.load.image('roundDamagedBrown', 'assets/Icons/round_damaged_brown.png');
+
+    //FONTS
     scene.load.bitmapFont('pixelfont', 'assets/fonts/minogram_6x10.png', 'assets/fonts/minogram_6x10.xml');
     scene.load.bitmapFont('numbers_green', 'assets/fonts/numbers_green.png', 'assets/fonts/numbers_green.xml');
     scene.load.bitmapFont('numbers_red', 'assets/fonts/numbers_red.png', 'assets/fonts/numbers_red.xml');
     scene.load.spritesheet('buttons', 'assets/buttonGray.png', { frameWidth: 190, frameHeight: 49 });
-    scene.load.spritesheet('swordAttack', 'assets/player/sword_attack/sword_attack_full.png', { frameWidth: 64, frameHeight: 64 });
+
+    //ENEMIES
     scene.load.spritesheet('slimeDeath', 'assets/Enemies/Slime1/Death/Slime1_Death_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('slimeHurt', 'assets/Enemies/Slime1/Hurt/Slime1_Hurt_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('slimeAttack', 'assets/Enemies/Slime1/Attack/Slime1_attack_full.png', { frameWidth: 64, frameHeight: 64 });
-    scene.load.spritesheet('playerHurt', 'assets/player/sword_hurt/sword_Hurt_full.png', { frameWidth: 64, frameHeight: 64 });
-    scene.load.spritesheet('playerDeath', 'assets/player/sword_death/sword_death_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('magmaSlimeIdle', 'assets/Enemies/Slime3/Idle/Slime3_idle_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('magmaSlimeWalk', 'assets/Enemies/Slime3/Walk/Slime3_walk_full.png', { frameWidth: 64, frameHeight: 64 });
     scene.load.spritesheet('magmaSlimeAttack', 'assets/Enemies/Slime3/Attack/Slime3_attack_full.png', { frameWidth: 64, frameHeight: 64 });

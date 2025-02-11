@@ -57,10 +57,48 @@ class GameScene extends Phaser.Scene {
         this.add.image(110, 110, 'brownBox').setScale(1.5).setOrigin(0.5, 0.5);
 
         // Add pairs of roundDamagedBrown and brownButton below the brownBox
-        for (let i = 0; i < 5; i++) {
+        const icons = ['healthIdle', 'staminaIdle', 'damage', 'range', 'speed', 'experience'];
+        const statTexts = [];
+        for (let i = 0; i < 6; i++) {
             this.add.image(50, 270 + i * 70, 'roundDamagedBrown').setScale(0.5).setOrigin(0.5, 0.5);
             this.add.image(150, 270 + i * 70, 'brownButton').setScale(1).setOrigin(0.5, 0.5);
+            const scale = (icons[i] === 'healthIdle' || icons[i] === 'staminaIdle') ? 2.25 : 0.5;
+            const sprite = this.add.sprite(50, 270 + i * 70, icons[i]).setScale(scale).setOrigin(0.5, 0.5);
+
+            if (icons[i] === 'healthIdle') {
+                this.healthSprite = sprite;
+            } else if (icons[i] === 'staminaIdle') {
+                this.staminaSprite = sprite;
+            }
+
+            let statValue;
+            switch (icons[i]) {
+                case 'healthIdle':
+                    statValue = this.player.hp;
+                    break;
+                case 'staminaIdle':
+                    statValue = this.player.attackCount;
+                    break;
+                case 'damage':
+                    statValue = this.player.damage;
+                    break;
+                case 'range':
+                    statValue = this.player.range;
+                    break;
+                case 'speed':
+                    statValue = this.player.speed;
+                    break;
+                case 'experience':
+                    statValue = this.player.experience;
+                    break;
+            }
+
+            const statText = this.add.bitmapText(150, 270 + i * 70, 'pixelfont', `${statValue}`, 24).setOrigin(0.5, 0.5).setTint(0x000000);
+            statTexts.push(statText);
         }
+
+        this.statTexts = statTexts;
+
         //Add bannerHanging to the top middle
         this.add.image(this.sys.game.config.width / 2, 50, 'bannerHanging').setScale(0.6).setOrigin(0.5, 0.5);
         // Add text indicating who's turn it is in the banner
@@ -84,7 +122,17 @@ class GameScene extends Phaser.Scene {
         // Listen for player move events
         this.events.on('playerMove', this.onPlayerMove, this);
 
+        this.manual = this.add.image(110, this.sys.game.config.height - 270, 'book').setScale(0.75).setInteractive();
+        this.help = this.add.image(50, this.sys.game.config.height - 120, 'help').setScale(1).setInteractive();
         
+        this.manual.on('pointerdown', () => {
+            this.showManual();
+        });
+    }
+
+    showManual() {
+        this.scene.pause(); // Pause the game scene
+        this.scene.launch('ManualScene'); // Launch the manual scene
     }
 
     resetGame() {
@@ -97,6 +145,14 @@ class GameScene extends Phaser.Scene {
         if (!this.player.isMoving) {
             this.turnText.setText(this.input.enabled ? 'Your turn' : 'Enemies turn');
         }
+
+        // Update stat texts
+        this.statTexts[0].setText(`${this.player.hp}`);
+        this.statTexts[1].setText(`${this.player.attackCount}`);
+        this.statTexts[2].setText(`${this.player.damage}`);
+        this.statTexts[3].setText(`${this.player.range}`);
+        this.statTexts[4].setText(`${this.player.speed}`);
+        this.statTexts[5].setText(`${this.player.experience}`);
     }
 
     spawnEnemies() {
@@ -222,6 +278,8 @@ class GameScene extends Phaser.Scene {
             alpha: 1,
             duration: 1000
         });
+
+        this.player.experience = 0; // Reset experience on game over
     }
 }
 

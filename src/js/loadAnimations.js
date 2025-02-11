@@ -317,6 +317,13 @@ export function loadAnimations(scene) {
     });
 
     scene.anims.create({
+        key: 'manual_open',
+        frames: scene.anims.generateFrameNumbers('manual_open', { start: 0, end: 3 }),
+        frameRate: 8,
+        repeat: 0
+    })
+
+    scene.anims.create({
         key: 'magmaSlimeIdleFront',
         frames: scene.anims.generateFrameNumbers('magmaSlimeIdle', { start: 0, end: 5 }),
         frameRate: 5,

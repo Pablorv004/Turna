@@ -1,18 +1,122 @@
 class Player {
     constructor(scene) {
         this.scene = scene;
-        this.damage = 5; // Default damage points
+        this._damage = 5; // Default damage points
         this.tileOn = null; // Property to track the tile the player is standing on
-        this.range = 1; // Default jump distance
+        this._range = 1; // Default jump distance
         this.isMoving = false; // Flag to track if the player is moving
-        this.attackCount = 0; // Counter to track the number of attacks
-        this.hp = 10; // Player's health points
+        this._attackCount = 1; // Counter to track the number of attacks
+        this._hp = 10; // Player's health points
         this.lastDirection = 'down'; // Track the last direction the player walked
+        this._experience = 0; // Player's experience points
+        this._speed = 1; // Player's speed
+    }
+
+    set hp(value) {
+        const diff = value - this._hp;
+        this._hp = value;
+        this.updateStatText(0, diff);
+        if (diff > 0) {
+            this.scene.healthSprite.play('healthAdd');
+            this.scene.healthSprite.once('animationcomplete', () => {
+                this.scene.healthSprite.play('healthIdle');
+            });
+        }
+    }
+
+    get hp() {
+        return this._hp;
+    }
+
+    set attackCount(value) {
+        const diff = value - this._attackCount;
+        this._attackCount = value;
+        this.updateStatText(1, diff);
+        if (diff > 0) {
+            this.scene.staminaSprite.play('staminaAdd');
+            this.scene.staminaSprite.once('animationcomplete', () => {
+                this.scene.staminaSprite.play('staminaIdle');
+            });
+        }
+    }
+
+    get attackCount() {
+        return this._attackCount;
+    }
+
+    set damage(value) {
+        const diff = value - this._damage;
+        this._damage = value;
+        this.updateStatText(2, diff);
+    }
+
+    get damage() {
+        return this._damage;
+    }
+
+    set range(value) {
+        const diff = value - this._range;
+        this._range = value;
+        this.updateStatText(3, diff);
+    }
+
+    get range() {
+        return this._range;
+    }
+
+    set speed(value) {
+        const diff = value - this._speed;
+        this._speed = value;
+        this.updateStatText(4, diff);
+    }
+
+    get speed() {
+        return this._speed;
+    }
+
+    set experience(value) {
+        const diff = value - this._experience;
+        this._experience = value;
+        this.updateStatText(5, diff);
+    }
+
+    get experience() {
+        return this._experience;
+    }
+
+    updateStatText(index, diff) {
+        if (diff !== 0) {
+            const sign = diff > 0 ? '+' : '';
+            const font = diff > 0 ? 'numbers_green' : 'numbers_red';
+            const statText = this.scene.statTexts[index];
+            const indicator = this.scene.add.bitmapText(statText.x + 30, statText.y, font, `${sign}${diff}`, 24).setOrigin(0.5, 0.5);
+            this.scene.tweens.add({
+                targets: indicator,
+                y: statText.y - 20,
+                alpha: 0,
+                duration: 1000,
+                onComplete: () => {
+                    indicator.destroy();
+                }
+            });
+        }
     }
 
     takeDamage(amount) {
         this.hp -= amount;
         console.log(`Player took ${amount} damage, ${this.hp} HP left`);
+
+        // Display damage indicator
+        const damageText = this.scene.add.bitmapText(this.scene.playerSprite.x, this.scene.playerSprite.y - 20, 'numbers_red', `-${amount}`, 24).setOrigin(0.5, 0.5);
+        this.scene.tweens.add({
+            targets: damageText,
+            y: this.scene.playerSprite.y - 40,
+            alpha: 0,
+            duration: 1000,
+            onComplete: () => {
+                damageText.destroy();
+            }
+        });
 
         let hurtAnimation, deathAnimation;
         switch (this.lastDirection) {
@@ -91,7 +195,7 @@ class Player {
                 this.setIdleAnimation();
                 this.tileOn = tile;
                 this.isMoving = false; // Reset the moving flag
-                this.attackCount = 0; // Reset the attack counter
+                this.attackCount = 1; // Reset the attack counter
                 this.scene.input.enabled = true; // Enable input
                 console.log(`Player moved to ${tile.type} tile`);
                 this.scene.events.emit('playerMove'); // Emit player move event
@@ -118,7 +222,7 @@ class Player {
     }
 
     attackTile(tile) {
-        if (this.isMoving || this.attackCount > 0) return; // Do nothing if the player is already moving or has attacked
+        if (this.isMoving || this.attackCount < 1) return; // Do nothing if the player is already moving or has attacked
 
         const dx = tile.x - this.tileOn.x;
         const dy = tile.y - this.tileOn.y;
@@ -154,7 +258,7 @@ class Player {
         this.scene.playerSprite.once('animationcomplete', () => {
             this.setIdleAnimation();
             this.isMoving = false; // Reset the moving flag
-            this.attackCount++; // Increment the attack counter
+            this.attackCount--; // Increment the attack counter
 
             // Check if the player has nowhere to move
             const canMove = this.scene.tiles.some(tile => this.canMoveToTile(tile, this.scene.tiles));

@@ -11,6 +11,7 @@ class Enemy {
         this.jumpDistance = textures.jumpDistance;
         this.isMovingToTile = null;
         this.sprite = null;
+        this.experienceDropped = textures.experienceDropped; // Experience dropped by the enemy
     }
 
     spawn() {
@@ -196,6 +197,19 @@ class Enemy {
     takeDamage(amount) {
         this.hp -= amount;
         console.log(`Enemy took ${amount} damage, ${this.hp} HP left`);
+
+        // Display damage indicator
+        const damageText = this.scene.add.bitmapText(this.sprite.x, this.sprite.y - 20, 'numbers_red', `-${amount}`, 24).setOrigin(0.5, 0.5);
+        this.scene.tweens.add({
+            targets: damageText,
+            y: this.sprite.y - 40,
+            alpha: 0,
+            duration: 1000,
+            onComplete: () => {
+                damageText.destroy();
+            }
+        });
+
         if (this.hp <= 0) {
             this.kill();
         } else {
@@ -287,6 +301,7 @@ class Enemy {
     }
 
     kill() {
+        
         console.log('Enemy killed');
         const dx = this.scene.player.tileOn.x - this.tileOn.x;
         const dy = this.scene.player.tileOn.y - this.tileOn.y;
@@ -317,6 +332,7 @@ class Enemy {
                 onComplete: () => {
                     this.sprite.destroy();
                     this.scene.enemies = this.scene.enemies.filter(enemy => enemy !== this);
+                    this.scene.player.experience += this.experienceDropped; // Update player's experience
                     this.scene.input.enabled = true;
                 }
             });
