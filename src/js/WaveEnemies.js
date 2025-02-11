@@ -2,11 +2,28 @@ import BaseSlime from './BaseSlime.js';
 import MagmaSlime from './MagmaSlime.js';
 import SkullSlime from './SkullSlime.js';
 
-export function getWaveEnemies(waveNumber, scene) {
+export function getWaveEnemies(waveNumber, scene, difficulty) {
     const enemies = [];
-    const baseSlimeCount = Math.min(waveNumber, 5 - waveNumber > 0 ? 5 - waveNumber : 0);
-    const magmaSlimeCount = Math.min(waveNumber - 2, 10 - waveNumber > 0 ? 10 - waveNumber : 0);
-    const skullSlimeCount = Math.max(0, waveNumber - 5);
+    let baseSlimeCount, magmaSlimeCount, skullSlimeCount;
+
+    switch (difficulty) {
+        case 'easy':
+            baseSlimeCount = Math.min(waveNumber, 5 - waveNumber > 0 ? 5 - waveNumber : 0);
+            magmaSlimeCount = Math.min(waveNumber - 4, 10 - waveNumber > 0 ? 10 - waveNumber : 0);
+            skullSlimeCount = Math.max(0, waveNumber - 7);
+            break;
+        case 'hard':
+            baseSlimeCount = Math.min(waveNumber, 5 - waveNumber > 0 ? 5 - waveNumber : 0);
+            magmaSlimeCount = Math.min(waveNumber - 1, 10 - waveNumber > 0 ? 10 - waveNumber : 0);
+            skullSlimeCount = Math.max(0, waveNumber - 3);
+            break;
+        default:
+            baseSlimeCount = Math.min(waveNumber, 5 - waveNumber > 0 ? 5 - waveNumber : 0);
+            magmaSlimeCount = Math.min(waveNumber - 2, 10 - waveNumber > 0 ? 10 - waveNumber : 0);
+            skullSlimeCount = Math.max(0, waveNumber - 5);
+            break;
+    }
+
     const additionalHP = Math.floor(waveNumber / 2) * 2;
 
     for (let i = 0; i < baseSlimeCount; i++) {

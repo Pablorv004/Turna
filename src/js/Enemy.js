@@ -276,26 +276,9 @@ class Enemy {
         else {
             console.log('No previous tile to knockback to');
             this.scene.input.enabled = true;
-
             let hurtAnimation, idleAnimation;
-            if (Math.abs(dy) > Math.abs(dx)) {
-                if (dy > 0) {
-                    hurtAnimation = this.textures.hurtDown;
-                    idleAnimation = this.textures.idleFront;
-                } else {
-                    hurtAnimation = this.textures.hurtUp;
-                    idleAnimation = this.textures.idleBack;
-                }
-            } else {
-                if (dx > 0) {
-                    hurtAnimation = this.textures.hurtRight;
-                    idleAnimation = this.textures.idleRight;
-                } else {
-                    hurtAnimation = this.textures.hurtLeft;
-                    idleAnimation = this.textures.idleLeft;
-                }
-            }
-
+            hurtAnimation = this.textures.hurtDown;
+            idleAnimation = this.textures.idleFront;
             this.sprite.play(hurtAnimation);
             this.sprite.once('animationcomplete', () => {
                 this.sprite.play(idleAnimation);
