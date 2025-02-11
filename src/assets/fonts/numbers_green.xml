@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<font>
+    <info face="numbers_green" size="9" bold="0" italic="0"/>
+    <common lineHeight="9" base="9" scaleW="90" scaleH="9" pages="1" packed="0"/>
+    <pages>
+        <page id="0" file="numbers_green.png"/>
+    </pages>
+    <chars count="12">
+        <char id="48" x="0" y="0" width="7" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 0 -->
+        <char id="49" x="7" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 1 -->
+        <char id="50" x="15" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 2 -->
+        <char id="51" x="22" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 3 -->
+        <char id="52" x="31" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 4 -->
+        <char id="53" x="40" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 5 -->
+        <char id="54" x="47" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 6 -->
+        <char id="55" x="55" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 7 -->
+        <char id="56" x="64" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 8 -->
+        <char id="57" x="71" y="0" width="8" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- 9 -->
+        <char id="43" x="79" y="0" width="9" height="9" page="0" xadvance="9" xoffset="0" yoffset="0"/>
+        <!-- + -->
+        <char id="45" x="0" y="9" width="9" height="9" page="0" xadvance="12" xoffset="0" yoffset="0"/>
+        <!-- - -->
+    </chars>
+</font>

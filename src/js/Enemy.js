@@ -155,7 +155,7 @@ class Enemy {
 
         this.sprite.play(attackAnimation);
 
-        this.scene.time.delayedCall(650, () => {
+        this.scene.time.delayedCall(600, () => {
             player.takeDamage(this.damage);
         });
 

@@ -1,4 +1,33 @@
 export function loadAnimations(scene) {
+
+    scene.anims.create({
+        key: 'healthIdle',
+        frames: scene.anims.generateFrameNumbers('healthIdle', { start: 0, end: 1 }),
+        frameRate: 2,
+        repeat: -1
+    });
+
+    scene.anims.create({
+        key: 'healthAdd',
+        frames: scene.anims.generateFrameNumbers('healthAdd', { start: 0, end: 4 }),
+        frameRate: 10,
+        repeat: 0
+    });
+
+    scene.anims.create({
+        key: 'staminaIdle',
+        frames: scene.anims.generateFrameNumbers('staminaIdle', { start: 0, end: 1 }),
+        frameRate: 2,
+        repeat: -1
+    });
+
+    scene.anims.create({
+        key: 'staminaAdd',
+        frames: scene.anims.generateFrameNumbers('staminaAdd', { start: 0, end: 4 }),
+        frameRate: 10,
+        repeat: 0
+    });
+    
     scene.anims.create({
         key: 'idle',
         frames: scene.anims.generateFrameNumbers('playerIdle', { start: 0, end: scene.textures.get('playerIdle').frameTotal - 10 }),

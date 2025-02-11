@@ -1,8 +1,7 @@
 class Player {
     constructor(scene) {
         this.scene = scene;
-        this.damage = 5;
-        this.wisdom = 1;
+        this.damage = 5; // Default damage points
         this.tileOn = null; // Property to track the tile the player is standing on
         this.range = 1; // Default jump distance
         this.isMoving = false; // Flag to track if the player is moving
