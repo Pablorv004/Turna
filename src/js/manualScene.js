@@ -130,6 +130,9 @@ class ManualScene extends Phaser.Scene {
         if (this.tileDescriptionText) {
             this.tileDescriptionText.destroy();
         }
+        if (this.selectedTile) {
+            this.selectedTile.destroy();
+        }
         this.slimeIcons.forEach(icon => icon.destroy());
         this.tileIcons.forEach(icon => icon.destroy());
         this.manualSprite.anims.playReverse('manual_open'); // Play reverse animation
