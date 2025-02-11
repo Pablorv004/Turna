@@ -71,7 +71,7 @@ class Tile {
             return;
         }
 
-        if (this.scene.player.canMoveToTile(this, this.scene.tiles)) {
+        if (this.scene.player.canInteractWithTile(this, this.scene.tiles)) {
             this.effect();
             this.scene.player.moveToTile(this);
         } else {

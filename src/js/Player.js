@@ -14,7 +14,7 @@ class Player {
 
     set hp(value) {
         const diff = value - this._hp;
-        this._hp = value;
+        this._hp = Math.max(value, 0); // Ensure HP does not go below 0
         this.updateStatText(0, diff);
         if (diff > 0) {
             this.scene.healthSprite.play('healthAdd');
@@ -223,7 +223,7 @@ class Player {
 
     attackTile(tile) {
         if (this.isMoving || this.attackCount < 1) return; // Do nothing if the player is already moving or has attacked
-
+        if(!this.canInteractWithTile(tile, this.scene.tiles)) return; // Do nothing if the player cannot interact with the tile
         const dx = tile.x - this.tileOn.x;
         const dy = tile.y - this.tileOn.y;
 
@@ -246,13 +246,12 @@ class Player {
         }
 
         this.isMoving = true; // Set the moving flag to true
-        this.scene.input.enabled = false; // Disable input
 
         this.scene.time.delayedCall(400, () => {
-            const enemy = this.scene.enemies.find(enemy => enemy.tileOn === tile);
-            if (enemy) {
+            const enemies = this.scene.enemies.filter(enemy => enemy.tileOn === tile);
+            enemies.forEach(enemy => {
                 enemy.takeDamage(this.damage);
-            }
+            });
         });
 
         this.scene.playerSprite.once('animationcomplete', () => {
@@ -261,14 +260,14 @@ class Player {
             this.attackCount--; // Increment the attack counter
 
             // Check if the player has nowhere to move
-            const canMove = this.scene.tiles.some(tile => this.canMoveToTile(tile, this.scene.tiles));
+            const canMove = this.scene.tiles.some(tile => this.canInteractWithTile(tile, this.scene.tiles));
             if (!canMove) {
                 this.scene.events.emit('playerMove'); // Emit player move event to skip turn
             }
         });
     }
 
-    canMoveToTile(tile, tiles) {
+    canInteractWithTile(tile, tiles) {
         if (!this.tileOn) return true; // Allow initial move
 
         const xoffset = 65;

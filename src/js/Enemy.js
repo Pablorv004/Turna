@@ -7,7 +7,6 @@ class Enemy {
         this.damage = textures.damage;
         this.range = textures.range;
         this.tileOn = null;
-        this.previousTile = null;
         this.jumpDistance = textures.jumpDistance;
         this.isMovingToTile = null;
         this.sprite = null;
@@ -26,9 +25,9 @@ class Enemy {
 
         if (validTiles.length > 0) {
             const spawnTile = validTiles[Math.floor(Math.random() * validTiles.length)];
+            this.sprite = this.scene.add.sprite(spawnTile.x, spawnTile.y + this.scene.tileOffset + 10, this.textures.idleFront);
             this.moveToTile(spawnTile);
             this.tileOn = spawnTile;
-            this.sprite = this.scene.add.sprite(spawnTile.x, spawnTile.y + this.scene.tileOffset + 10, this.textures.idleFront);
             this.sprite.setScale(2);
             this.sprite.play(this.textures.idleFront);
             this.sprite.setDepth(1);
@@ -45,12 +44,19 @@ class Enemy {
     }
 
     moveToTile(tile) {
-        this.previousTile = this.tileOn;
         this.tileOn = tile;
+        const occupyingEnemies = this.scene.enemies.filter(enemy => enemy.tileOn === tile);
+        if (occupyingEnemies.length > 1) {
+            const offset = 5 * (occupyingEnemies.length - 1);
+            this.sprite.setPosition(tile.x + offset, tile.y + this.scene.tileOffset + offset);
+        } else {
+            this.sprite.setPosition(tile.x, tile.y + this.scene.tileOffset);
+        }
         console.log(`Enemy moved to ${tile.type} tile`);
     }
 
     moveTowardsPlayer(playerTile, tiles) {
+        if (this.hp <= 0) return; // Ensure the enemy is alive
         const xoffset = 65;
         const yoffset = 54;
 
@@ -64,8 +70,7 @@ class Enemy {
                 const nextMove = path[0];
                 if (nextMove) {
                     const targetTile = tiles.find(t => t.x === nextMove.x && t.y === nextMove.y);
-                    const isTileOccupied = this.scene.enemies.some(enemy => enemy.tileOn === targetTile || enemy.isMovingToTile === targetTile);
-                    if (targetTile && !isTileOccupied) {
+                    if (targetTile) {
                         const dx = targetTile.x - this.tileOn.x;
                         const dy = targetTile.y - this.tileOn.y;
 
@@ -213,95 +218,114 @@ class Enemy {
         if (this.hp <= 0) {
             this.kill();
         } else {
-            this.knockback();
+            this.hurt();
         }
+        this.knockback();
+    }
+
+    hurt() {
+        const playerTile = this.scene.player.tileOn;
+        const dx = this.tileOn.x - playerTile.x;
+        const dy = this.tileOn.y - playerTile.y;
+
+        const getHurtAnimation = (dx, dy) => {
+            if (Math.abs(dy) > Math.abs(dx)) {
+                return dy > 0 ? this.textures.hurtDown : this.textures.hurtUp;
+            } else {
+                return dx > 0 ? this.textures.hurtRight : this.textures.hurtLeft;
+            }
+        };
+
+        this.sprite.play(getHurtAnimation(dx, dy));
     }
 
     knockback() {
-        if (this.previousTile) {
-            const isTileOccupied = this.scene.enemies.some(enemy => enemy.tileOn === this.previousTile) || this.scene.player.tileOn === this.previousTile;
-            if (isTileOccupied) {
-                console.log('Cannot knockback, tile is occupied');
-                this.scene.input.enabled = true;
-                const dx = this.previousTile.x - this.tileOn.x;
-            const dy = this.previousTile.y - this.tileOn.y;
+        const playerTile = this.scene.player.tileOn;
+        const dx = this.tileOn.x - playerTile.x;
+        const dy = this.tileOn.y - playerTile.y;
 
-            let hurtAnimation, idleAnimation;
-            if (Math.abs(dy) > Math.abs(dx)) {
-                if (dy > 0) {
-                    hurtAnimation = this.textures.hurtDown;
-                    idleAnimation = this.textures.idleFront;
-                } else {
-                    hurtAnimation = this.textures.hurtUp;
-                    idleAnimation = this.textures.idleBack;
-                }
+        const behindTileX = this.tileOn.x + dx;
+        const behindTileY = this.tileOn.y + dy;
+
+        const behindTile = this.tiles.find(tile => tile.x === behindTileX && tile.y === behindTileY);
+
+        if (behindTile) {
+            const occupyingEnemies = this.scene.enemies.filter(enemy => enemy.tileOn === behindTile);
+
+            if (occupyingEnemies.length > 0) {
+                const halfDamage = Math.floor(this.scene.player.damage / 2);
+                const enemiesToDamage = [this, ...occupyingEnemies];
+
+                this.scene.tweens.add({
+                    targets: this.sprite,
+                    x: behindTile.x,
+                    y: behindTile.y + this.scene.tileOffset,
+                    duration: 500,
+                    onComplete: () => {
+                        this.moveToTile(behindTile);
+                        if (this.hp > 0) {
+                            this.sprite.play(this.textures.idleFront);
+                        }
+                        this.scene.input.enabled = true;
+
+                        enemiesToDamage.forEach(enemy => {
+                            enemy.hp -= halfDamage;
+                            console.log(`Enemy took ${halfDamage} damage, ${enemy.hp} HP left`);
+
+                            // Display damage indicator
+                            const damageText = this.scene.add.bitmapText(enemy.sprite.x, enemy.sprite.y - 20, 'numbers_red', `-${halfDamage}`, 24).setOrigin(0.5, 0.5);
+                            this.scene.tweens.add({
+                                targets: damageText,
+                                y: enemy.sprite.y - 40,
+                                alpha: 0,
+                                duration: 1000,
+                                onComplete: () => {
+                                    damageText.destroy();
+                                }
+                            });
+
+                            if (enemy.hp <= 0) {
+                                enemy.kill();
+                            } else {
+                                enemy.hurt();
+                                enemy.sprite.once('animationcomplete', () => {
+                                    if (enemy.hp > 0) {
+                                        enemy.sprite.play(enemy.textures.idleFront);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             } else {
-                if (dx > 0) {
-                    hurtAnimation = this.textures.hurtRight;
-                    idleAnimation = this.textures.idleRight;
-                } else {
-                    hurtAnimation = this.textures.hurtLeft;
-                    idleAnimation = this.textures.idleLeft;
-                }
+                this.scene.tweens.add({
+                    targets: this.sprite,
+                    x: behindTile.x,
+                    y: behindTile.y + this.scene.tileOffset,
+                    duration: 500,
+                    onComplete: () => {
+                        this.moveToTile(behindTile);
+                        if (this.hp > 0) {
+                            this.sprite.play(this.textures.idleFront);
+                        }
+                        this.scene.input.enabled = true;
+                    }
+                });
             }
-
-            this.sprite.play(hurtAnimation);
-            this.sprite.once('animationcomplete', () => {
-                this.sprite.play(idleAnimation);
-            });
-                return;
-            }
-
-            const dx = this.previousTile.x - this.tileOn.x;
-            const dy = this.previousTile.y - this.tileOn.y;
-
-            let hurtAnimation, idleAnimation;
-            if (Math.abs(dy) > Math.abs(dx)) {
-                if (dy > 0) {
-                    hurtAnimation = this.textures.hurtDown;
-                    idleAnimation = this.textures.idleFront;
-                } else {
-                    hurtAnimation = this.textures.hurtUp;
-                    idleAnimation = this.textures.idleBack;
-                }
-            } else {
-                if (dx > 0) {
-                    hurtAnimation = this.textures.hurtRight;
-                    idleAnimation = this.textures.idleRight;
-                } else {
-                    hurtAnimation = this.textures.hurtLeft;
-                    idleAnimation = this.textures.idleLeft;
-                }
-            }
-
-            this.sprite.play(hurtAnimation);
-            this.scene.tweens.add({
-                targets: this.sprite,
-                x: this.previousTile.x,
-                y: this.previousTile.y + this.scene.tileOffset,
-                duration: 500,
-                onComplete: () => {
-                    this.moveToTile(this.previousTile);
-                    this.sprite.play(idleAnimation);
-                    this.scene.input.enabled = true;
-                }
-            });
-        }
-        else {
-            console.log('No previous tile to knockback to');
+        } else {
+            console.log('No tile behind to knockback to');
             this.scene.input.enabled = true;
-            let hurtAnimation, idleAnimation;
-            hurtAnimation = this.textures.hurtDown;
-            idleAnimation = this.textures.idleFront;
-            this.sprite.play(hurtAnimation);
             this.sprite.once('animationcomplete', () => {
-                this.sprite.play(idleAnimation);
+                if (this.hp > 0) {
+                    this.sprite.play(this.textures.idleFront);
+                }
             });
         }
     }
 
     kill() {
-        
+        if (this.hp > 0) return; // Ensure the enemy is actually dead
+
         console.log('Enemy killed');
         const dx = this.scene.player.tileOn.x - this.tileOn.x;
         const dy = this.scene.player.tileOn.y - this.tileOn.y;
@@ -321,8 +345,7 @@ class Enemy {
             }
         }
 
-        this.scene.input.enabled = false;
-
+        this.scene.input.enabled = true;
         this.sprite.play(deathAnimation);
         this.sprite.once('animationcomplete', () => {
             this.scene.tweens.add({
@@ -333,7 +356,7 @@ class Enemy {
                     this.sprite.destroy();
                     this.scene.enemies = this.scene.enemies.filter(enemy => enemy !== this);
                     this.scene.player.experience += this.experienceDropped; // Update player's experience
-                    this.scene.input.enabled = true;
+                    
                 }
             });
         });

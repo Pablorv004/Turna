@@ -9,17 +9,17 @@ export function getWaveEnemies(waveNumber, scene, difficulty) {
     switch (difficulty) {
         case 'easy':
             baseSlimeCount = Math.min(waveNumber, 5 - waveNumber > 0 ? 5 - waveNumber : 0);
-            magmaSlimeCount = Math.min(waveNumber - 4, 10 - waveNumber > 0 ? 10 - waveNumber : 0);
+            magmaSlimeCount = Math.min(waveNumber - 4, 10);
             skullSlimeCount = Math.max(0, waveNumber - 7);
             break;
         case 'hard':
             baseSlimeCount = Math.min(waveNumber, 5 - waveNumber > 0 ? 5 - waveNumber : 0);
-            magmaSlimeCount = Math.min(waveNumber - 1, 10 - waveNumber > 0 ? 10 - waveNumber : 0);
+            magmaSlimeCount = Math.min(waveNumber - 1, 10);
             skullSlimeCount = Math.max(0, waveNumber - 3);
             break;
         default:
             baseSlimeCount = Math.min(waveNumber, 5 - waveNumber > 0 ? 5 - waveNumber : 0);
-            magmaSlimeCount = Math.min(waveNumber - 2, 10 - waveNumber > 0 ? 10 - waveNumber : 0);
+            magmaSlimeCount = Math.min(waveNumber - 2, 10);
             skullSlimeCount = Math.max(0, waveNumber - 5);
             break;
     }
