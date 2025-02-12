@@ -166,36 +166,38 @@ class Enemy {
         });
 
         this.sprite.once('animationcomplete', () => {
-            let walkBackAnimation, idleAnimation;
-            if (Math.abs(dy) > Math.abs(dx)) {
-                if (dy > 0) {
-                    walkBackAnimation = this.textures.walkUp;
-                    idleAnimation = this.textures.idleFront;
+            if (this.hp > 0) {
+                let walkBackAnimation, idleAnimation;
+                if (Math.abs(dy) > Math.abs(dx)) {
+                    if (dy > 0) {
+                        walkBackAnimation = this.textures.walkUp;
+                        idleAnimation = this.textures.idleFront;
+                    } else {
+                        walkBackAnimation = this.textures.walkDown;
+                        idleAnimation = this.textures.idleBack;
+                    }
                 } else {
-                    walkBackAnimation = this.textures.walkDown;
-                    idleAnimation = this.textures.idleBack;
+                    if (dx > 0) {
+                        walkBackAnimation = this.textures.walkLeft;
+                        idleAnimation = this.textures.idleRight;
+                    } else {
+                        walkBackAnimation = this.textures.walkRight;
+                        idleAnimation = this.textures.idleLeft;
+                    }
                 }
-            } else {
-                if (dx > 0) {
-                    walkBackAnimation = this.textures.walkLeft;
-                    idleAnimation = this.textures.idleRight;
-                } else {
-                    walkBackAnimation = this.textures.walkRight;
-                    idleAnimation = this.textures.idleLeft;
-                }
+
+                this.sprite.play(walkBackAnimation);
+
+                this.scene.tweens.add({
+                    targets: this.sprite,
+                    x: this.tileOn.x,
+                    y: this.tileOn.y + this.scene.tileOffset,
+                    duration: 500,
+                    onComplete: () => {
+                        this.sprite.play(idleAnimation);
+                    }
+                });
             }
-
-            this.sprite.play(walkBackAnimation);
-
-            this.scene.tweens.add({
-                targets: this.sprite,
-                x: this.tileOn.x,
-                y: this.tileOn.y + this.scene.tileOffset,
-                duration: 500,
-                onComplete: () => {
-                    this.sprite.play(idleAnimation);
-                }
-            });
         });
     }
 
@@ -285,11 +287,13 @@ class Enemy {
                             });
 
                             if (enemy.hp <= 0) {
-                                enemy.kill();
+                                if (enemy.sprite) {
+                                    enemy.kill();
+                                }
                             } else {
                                 enemy.hurt();
                                 enemy.sprite.once('animationcomplete', () => {
-                                    if (enemy.hp > 0) {
+                                    if (enemy.hp > 0 && enemy.sprite) { // Check if the enemy sprite exists
                                         enemy.sprite.play(enemy.textures.idleFront);
                                     }
                                 });

@@ -23,6 +23,7 @@ export function loadImages(scene) {
 
     //UI
     scene.load.spritesheet('playButton', 'assets/Icons/buttons.png', { frameWidth: 190, frameHeight: 45 });
+    scene.load.spritesheet('whiteButton', 'assets/Icons/white_button.png', { frameWidth: 190, frameHeight: 45 });
     scene.load.image('greyBox', 'assets/Icons/greybox.png');
     scene.load.image('brownBox', 'assets/Icons/panel_brown_dark_corners_b.png');
     scene.load.image('brownButton', 'assets/Icons/button_brown.png');

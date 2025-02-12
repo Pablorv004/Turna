@@ -32,7 +32,7 @@ class GameScene extends Phaser.Scene {
 
         loadAnimations(this);
         const tiles = loadTiles(this);
-        
+
         const playerSprite = this.add.sprite(650 - 65 * 0.5, 400 + 54 + this.tileOffset, 'playerIdle'); // Spawn player on the center tile with offset
         playerSprite.setScale(2); // Scale the player sprite upwards
         playerSprite.play('idleDown'); // Set initial idle animation to looking down
@@ -52,7 +52,7 @@ class GameScene extends Phaser.Scene {
         this.movesText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 220, 'pixelfont', 'Next wave in', 20).setOrigin(0.5, 0.5);
         this.movesUntilNextWaveText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 165, 'pixelfont', `${this.movesUntilNextWave}`, 60).setOrigin(0.5, 0.5);
         this.movesTextMoves = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 125, 'pixelfont', 'moves', 24).setOrigin(0.5, 0.5);
-        
+
         // Add brownBox to the top left
         this.add.image(110, 110, 'brownBox').setScale(1.5).setOrigin(0.5, 0.5);
 
@@ -124,9 +124,25 @@ class GameScene extends Phaser.Scene {
 
         this.manual = this.add.image(110, this.sys.game.config.height - 270, 'book').setScale(0.75).setInteractive();
         this.help = this.add.image(50, this.sys.game.config.height - 120, 'help').setScale(1).setInteractive();
-        
+
         this.manual.on('pointerdown', () => {
             this.showManual();
+        });
+
+        this.skipTurnButton = this.add.sprite(this.sys.game.config.width / 2 - 25, this.sys.game.config.height - 120, 'whiteButton', 0).setInteractive();
+        this.skipTurnText = this.add.bitmapText(this.sys.game.config.width / 2 - 25, this.sys.game.config.height - 120, 'pixelfont', 'Skip turn', 20).setOrigin(0.5, 0.5).setTint(0x000000);
+        var canSkipTurn = true;
+        this.skipTurnButton.on('pointerup', () => {
+            if (canSkipTurn && this.player.hp > 0) {
+                this.skipTurnButton.setFrame(1);
+                this.events.emit('playerMove');
+                this.enemies.forEach(enemy => enemy.moveTowardsPlayer(this.player.tileOn, this.tiles));
+                canSkipTurn = false;
+                this.player.attackCount++;
+                this.time.delayedCall(1500, () => {
+                    canSkipTurn = true;
+                });
+            }
         });
     }
 
@@ -143,9 +159,11 @@ class GameScene extends Phaser.Scene {
     update() {
         // Game logic goes here
         if (!this.player.isMoving) {
+            if (this.input.enabled) {
+                this.skipTurnButton.setFrame(0);
+            }
             this.turnText.setText(this.input.enabled ? 'Your turn' : 'Enemies turn');
         }
-
         // Update stat texts
         this.statTexts[0].setText(`${this.player.hp}`);
         this.statTexts[1].setText(`${this.player.attackCount}`);

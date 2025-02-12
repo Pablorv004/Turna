@@ -37,6 +37,13 @@ export function loadAnimations(scene) {
     });
 
     scene.anims.create({
+        key: 'whiteButton',
+        frames: scene.anims.generateFrameNumbers('whiteButton', { start: 0, end: 1 }),
+        frameRate: 2,
+        repeat: 0
+    });
+
+    scene.anims.create({
         key: 'idleDown',
         frames: scene.anims.generateFrameNumbers('playerIdle', { start: 0, end: 11 }),
         frameRate: 5,
