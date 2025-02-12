@@ -276,27 +276,15 @@ class Enemy {
                                 enemy.hp -= halfDamage;
                                 console.log(`Enemy took ${halfDamage} damage, ${enemy.hp} HP left`);
 
-                            // Display damage indicator
-                            const damageText = this.scene.add.bitmapText(enemy.sprite.x, enemy.sprite.y - 20, 'numbers_red', `-${halfDamage}`, 24).setOrigin(0.5, 0.5);
-                            this.scene.tweens.add({
-                                targets: damageText,
-                                y: enemy.sprite.y - 40,
-                                alpha: 0,
-                                duration: 1000,
-                                onComplete: () => {
-                                    damageText.destroy();
-                                }
-                            });
-
-                            if (enemy.hp <= 0) {
-                                if (enemy.sprite) {
-                                    enemy.kill();
-                                }
-                            } else {
-                                enemy.hurt();
-                                enemy.sprite.once('animationcomplete', () => {
-                                    if (enemy.hp > 0 && enemy.sprite) { // Check if the enemy sprite exists
-                                        enemy.sprite.play(enemy.textures.idleFront);
+                                // Display damage indicator
+                                const damageText = this.scene.add.bitmapText(enemy.sprite.x, enemy.sprite.y - 20, 'numbers_red', `-${halfDamage}`, 24).setOrigin(0.5, 0.5);
+                                this.scene.tweens.add({
+                                    targets: damageText,
+                                    y: enemy.sprite.y - 40,
+                                    alpha: 0,
+                                    duration: 1000,
+                                    onComplete: () => {
+                                        damageText.destroy();
                                     }
                                 });
 
