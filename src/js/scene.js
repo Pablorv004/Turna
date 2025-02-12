@@ -138,7 +138,7 @@ class GameScene extends Phaser.Scene {
                 this.events.emit('playerMove');
                 this.enemies.forEach(enemy => enemy.moveTowardsPlayer(this.player.tileOn, this.tiles));
                 canSkipTurn = false;
-                this.player.attackCount++;
+                this.player.attackCount = 1;
                 this.time.delayedCall(1500, () => {
                     canSkipTurn = true;
                 });
