@@ -202,6 +202,7 @@ class Enemy {
     }
 
     takeDamage(amount) {
+        if (this.hp <= 0) return; // Ensure the enemy is not already dead
         this.hp -= amount;
         console.log(`Enemy took ${amount} damage, ${this.hp} HP left`);
 
@@ -271,8 +272,9 @@ class Enemy {
                         this.scene.input.enabled = true;
 
                         enemiesToDamage.forEach(enemy => {
-                            enemy.hp -= halfDamage;
-                            console.log(`Enemy took ${halfDamage} damage, ${enemy.hp} HP left`);
+                            if (enemy.hp > 0) { // Ensure the enemy is not already dead
+                                enemy.hp -= halfDamage;
+                                console.log(`Enemy took ${halfDamage} damage, ${enemy.hp} HP left`);
 
                             // Display damage indicator
                             const damageText = this.scene.add.bitmapText(enemy.sprite.x, enemy.sprite.y - 20, 'numbers_red', `-${halfDamage}`, 24).setOrigin(0.5, 0.5);
@@ -297,6 +299,17 @@ class Enemy {
                                         enemy.sprite.play(enemy.textures.idleFront);
                                     }
                                 });
+
+                                if (enemy.hp <= 0) {
+                                    enemy.kill();
+                                } else {
+                                    enemy.hurt();
+                                    enemy.sprite.once('animationcomplete', () => {
+                                        if (enemy.hp > 0) {
+                                            enemy.sprite.play(enemy.textures.idleFront);
+                                        }
+                                    });
+                                }
                             }
                         });
                     }

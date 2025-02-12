@@ -15,6 +15,10 @@ class GameScene extends Phaser.Scene {
         this.tileOffset = -25; // Constant to store the y value offset for the player and enemies
     }
 
+    init(data) {
+        this.difficulty = data.difficulty || 'normal'; // Initialize difficulty
+    }
+
     preload() {
         loadImages(this);
     }
@@ -174,7 +178,7 @@ class GameScene extends Phaser.Scene {
     }
 
     spawnEnemies() {
-        const newEnemies = getWaveEnemies(this.waveNumber, this);
+        const newEnemies = getWaveEnemies(this.waveNumber, this, this.difficulty);
 
         newEnemies.forEach((enemy, index) => {
             this.time.delayedCall(index * 100, () => {
