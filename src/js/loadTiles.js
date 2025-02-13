@@ -1,10 +1,11 @@
 import Tile from './Tile.js';
+import { TILE_CONFIG } from './config.js';
 
 export function loadTiles(scene) {
-    const centerx = 650;
-    const centery = 400;
-    const xoffset = 65;
-    const yoffset = 54;
+    const centerx = TILE_CONFIG.centerx;
+    const centery = TILE_CONFIG.centery;
+    const xoffset = TILE_CONFIG.xoffset;
+    const yoffset = TILE_CONFIG.yoffset;
 
     const tiles = [
         //GAME TILES

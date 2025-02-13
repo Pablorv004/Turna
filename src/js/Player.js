@@ -1,3 +1,5 @@
+import { TILE_CONFIG } from './config.js';
+
 class Player {
     constructor(scene) {
         this.scene = scene;
@@ -270,8 +272,8 @@ class Player {
     canInteractWithTile(tile, tiles) {
         if (!this.tileOn) return true; // Allow initial move
 
-        const xoffset = 65;
-        const yoffset = 54;
+        const xoffset = TILE_CONFIG.xoffset;
+        const yoffset = TILE_CONFIG.yoffset;
 
         const visited = new Set();
         const queue = [{ x: this.tileOn.x, y: this.tileOn.y, distance: 0 }];

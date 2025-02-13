@@ -1,3 +1,5 @@
+import { TILE_CONFIG } from './config.js';
+
 class Enemy {
     constructor(scene, tiles, textures) {
         this.scene = scene;
@@ -17,8 +19,8 @@ class Enemy {
         const validTiles = this.tiles.filter(tile => {
             const dx = Math.abs(tile.x - this.scene.player.tileOn.x);
             const dy = Math.abs(tile.y - this.scene.player.tileOn.y);
-            const xoffset = 65;
-            const yoffset = 54;
+            const xoffset = TILE_CONFIG.xoffset;
+            const yoffset = TILE_CONFIG.yoffset;
             const isTileOccupied = this.scene.enemies.some(enemy => enemy.tileOn === tile);
             return (dx > 1.5 * xoffset || dy > 1.5 * yoffset) && !isTileOccupied;
         });
@@ -57,8 +59,8 @@ class Enemy {
 
     moveTowardsPlayer(playerTile, tiles) {
         if (this.hp <= 0) return; // Ensure the enemy is alive
-        const xoffset = 65;
-        const yoffset = 54;
+        const xoffset = TILE_CONFIG.xoffset;
+        const yoffset = TILE_CONFIG.yoffset;
 
         const visited = new Set();
         const queue = [{ x: this.tileOn.x, y: this.tileOn.y, path: [] }];

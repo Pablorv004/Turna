@@ -9,6 +9,7 @@ import SkullSlime from './SkullSlime.js';
 import MainMenu from './mainMenu.js';
 import { getWaveEnemies } from './WaveEnemies.js';
 import HelpScene from './helpScene.js';
+import { TILE_CONFIG } from './config.js';
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -46,7 +47,7 @@ class GameScene extends Phaser.Scene {
         loadAnimations(this);
         const tiles = loadTiles(this);
 
-        const playerSprite = this.add.sprite(650 - 65 * 0.5, 400 + 54 + this.tileOffset, 'playerIdle'); // Spawn player on the center tile with offset
+        const playerSprite = this.add.sprite(TILE_CONFIG.centerx - TILE_CONFIG.xoffset * 0.5, TILE_CONFIG.centery + TILE_CONFIG.yoffset + this.tileOffset, 'playerIdle'); // Spawn player on the center tile with offset
         playerSprite.setScale(2); // Scale the player sprite upwards
         playerSprite.play('idleDown'); // Set initial idle animation to looking down
         this.playerSprite = playerSprite; // Make player sprite accessible in the scene
