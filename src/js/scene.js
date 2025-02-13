@@ -216,13 +216,14 @@ class GameScene extends Phaser.Scene {
             this.tweens.add({
                 targets: randomTile.sprite,
                 alpha: 0,
+                y: randomTile.sprite.y + 5,
                 duration: 100,
-                yoyo: true,
                 onComplete: () => {
                     randomTile.sprite.setTexture('magical');
                     this.tweens.add({
                         targets: randomTile.sprite,
                         alpha: 1,
+                        y: randomTile.sprite.y - 5,
                         duration: 100
                     });
                 }

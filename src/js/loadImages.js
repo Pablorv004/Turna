@@ -21,6 +21,31 @@ export function loadImages(scene) {
     scene.load.image('water', 'assets/Tiles/tileWater.png');
     scene.load.image('dirt', 'assets/Tiles/tileDirt.png');
 
+    // Bushes
+    scene.load.image('bushGrass', 'assets/Tiles/bushGrass.png');
+    scene.load.image('bushMagic', 'assets/Tiles/bushMagic.png');
+    scene.load.image('bushSnow', 'assets/Tiles/bushSnow.png');
+    scene.load.image('bushSand', 'assets/Tiles/bushSand.png');
+    scene.load.image('bushDirt', 'assets/Tiles/bushDirt.png');
+
+    // Flowers
+    scene.load.image('flowerBlue', 'assets/Tiles/flowerBlue.png');
+    scene.load.image('flowerGreen', 'assets/Tiles/flowerGreen.png');
+    scene.load.image('flowerRed', 'assets/Tiles/flowerRed.png');
+    scene.load.image('flowerWhite', 'assets/Tiles/flowerWhite.png');
+    scene.load.image('flowerYellow', 'assets/Tiles/flowerYellow.png');
+
+    // Hills
+    scene.load.image('hillGrass', 'assets/Tiles/hillGrass.png');
+    scene.load.image('hillSnow', 'assets/Tiles/hillSnow.png');
+    scene.load.image('hillMagic', 'assets/Tiles/hillMagic.png');
+    scene.load.image('hillSand', 'assets/Tiles/hillSand.png');
+    scene.load.image('hillDirt', 'assets/Tiles/hillDirt.png');
+
+    // Waves
+    scene.load.spritesheet('waveLava', 'assets/Tiles/waveLava.png', { frameWidth: 64, frameHeight: 64 });
+    scene.load.spritesheet('waveWater', 'assets/Tiles/waveWater.png', { frameWidth: 64, frameHeight: 64 });
+
     //UI
     scene.load.spritesheet('playButton', 'assets/Icons/buttons.png', { frameWidth: 190, frameHeight: 45 });
     scene.load.spritesheet('whiteButton', 'assets/Icons/white_button.png', { frameWidth: 190, frameHeight: 45 });
