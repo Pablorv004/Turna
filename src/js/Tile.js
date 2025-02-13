@@ -111,7 +111,6 @@ class Tile {
         }
 
         if (this.scene.player.canInteractWithTile(this, this.scene.tiles)) {
-            this.effect();
             this.scene.player.moveToTile(this);
         } else {
             console.log('Cannot move to this tile');
