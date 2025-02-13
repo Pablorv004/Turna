@@ -55,6 +55,7 @@ class Enemy {
             this.sprite.setPosition(tile.x, tile.y + this.scene.tileOffset);
         }
         console.log(`Enemy moved to ${tile.type} tile`);
+        tile.effect();
     }
 
     moveTowardsPlayer(playerTile, tiles) {
@@ -63,10 +64,10 @@ class Enemy {
         const yoffset = TILE_CONFIG.yoffset;
 
         const visited = new Set();
-        const queue = [{ x: this.tileOn.x, y: this.tileOn.y, path: [] }];
+        const queue = [{ x: this.tileOn.x, y: this.tileOn.y, path: [], avoidLava: false }];
 
         while (queue.length > 0) {
-            const { x, y, path } = queue.shift();
+            const { x, y, path, avoidLava } = queue.shift();
 
             if (x === playerTile.x && y === playerTile.y) {
                 const nextMove = path[0];
@@ -132,11 +133,20 @@ class Enemy {
 
             for (const neighbor of neighbors) {
                 const key = `${neighbor.x},${neighbor.y}`;
-                if (!visited.has(key) && tiles.some(t => t.x === neighbor.x && t.y === neighbor.y)) {
+                const tile = tiles.find(t => t.x === neighbor.x && t.y === neighbor.y);
+                if (tile && !visited.has(key)) {
                     visited.add(key);
-                    queue.push({ x: neighbor.x, y: neighbor.y, path: [...path, neighbor] });
+                    queue.push({
+                        x: neighbor.x,
+                        y: neighbor.y,
+                        path: [...path, neighbor],
+                        avoidLava: avoidLava || (tile.type === 2 && playerTile.type !== 2)
+                    });
                 }
             }
+
+            // Prioritize paths that avoid lava tiles unless the player is on a lava tile
+            queue.sort((a, b) => a.avoidLava - b.avoidLava);
         }
     }
 
@@ -196,7 +206,10 @@ class Enemy {
                     y: this.tileOn.y + this.scene.tileOffset,
                     duration: 500,
                     onComplete: () => {
-                        this.sprite.play(idleAnimation);
+                        
+                        if (this.scene.enemies.includes(this)) {
+                            this.sprite.play(idleAnimation);
+                        }
                     }
                 });
             }
@@ -225,6 +238,8 @@ class Enemy {
         } else {
             this.hurt();
         }
+
+        
         this.knockback();
     }
 

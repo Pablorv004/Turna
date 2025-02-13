@@ -45,8 +45,8 @@ class Tile {
                         y: this.sprite.y + 5,
                         duration: 100,
                         onComplete: () => {
-                            this.setProperties(0);
-                            this.sprite.setTexture('grass');
+                            this.setProperties(this.previousType);
+                            this.sprite.setTexture(this.getTexture(this.previousType));
                             this.scene.tweens.add({
                                 targets: this.sprite,
                                 alpha: 1,

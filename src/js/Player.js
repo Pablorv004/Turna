@@ -201,8 +201,10 @@ class Player {
                 console.log(`Player moved to ${tile.type} tile`);
                 this.scene.events.emit('playerMove');
                 this.scene.enemies.forEach(enemy => enemy.moveTowardsPlayer(this.scene.player.tileOn, this.scene.tiles));
+                this.tileOn.effect();
             }
         });
+        
     }
 
     setIdleAnimation() {

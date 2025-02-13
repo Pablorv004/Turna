@@ -266,6 +266,7 @@ class GameScene extends Phaser.Scene {
         const nonMagicalTiles = this.tiles.filter(tile => tile.type !== 4 && tile !== this.player.tileOn);
         if (nonMagicalTiles.length > 0) {
             const randomTile = nonMagicalTiles[Math.floor(Math.random() * nonMagicalTiles.length)];
+            randomTile.previousType = randomTile.type;
             randomTile.setProperties(4);
             this.tweens.add({
                 targets: randomTile.sprite,
