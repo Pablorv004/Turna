@@ -27,7 +27,7 @@ class SkullSlime extends Enemy {
             deathUp: 'skullSlimeDeathUp',
             deathLeft: 'skullSlimeDeathLeft',
             deathRight: 'skullSlimeDeathRight',
-            experienceDropped: 15 // Experience dropped by SkullSlime
+            experienceDropped: 15
         });
     }
 }

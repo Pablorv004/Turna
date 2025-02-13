@@ -33,7 +33,7 @@ class Enemy {
             this.sprite.setScale(2);
             this.sprite.play(this.textures.idleFront);
             this.sprite.setDepth(1);
-            this.sprite.alpha = 0; // Set initial alpha to 0 for fade-in effect
+            this.sprite.alpha = 0;
 
             this.scene.tweens.add({
                 targets: this.sprite,
@@ -58,7 +58,7 @@ class Enemy {
     }
 
     moveTowardsPlayer(playerTile, tiles) {
-        if (this.hp <= 0) return; // Ensure the enemy is alive
+        if (this.hp <= 0) return;
         const xoffset = TILE_CONFIG.xoffset;
         const yoffset = TILE_CONFIG.yoffset;
 
@@ -204,7 +204,7 @@ class Enemy {
     }
 
     takeDamage(amount) {
-        if (this.hp <= 0) return; // Ensure the enemy is not already dead
+        if (this.hp <= 0) return;
         this.hp -= amount;
         console.log(`Enemy took ${amount} damage, ${this.hp} HP left`);
 
@@ -274,11 +274,10 @@ class Enemy {
                         this.scene.input.enabled = true;
 
                         enemiesToDamage.forEach(enemy => {
-                            if (enemy.hp > 0) { // Ensure the enemy is not already dead
+                            if (enemy.hp > 0) {
                                 enemy.hp -= halfDamage;
                                 console.log(`Enemy took ${halfDamage} damage, ${enemy.hp} HP left`);
 
-                                // Display damage indicator
                                 const damageText = this.scene.add.bitmapText(enemy.sprite.x, enemy.sprite.y - 20, 'numbers_red', `-${halfDamage}`, 24).setOrigin(0.5, 0.5);
                                 this.scene.tweens.add({
                                     targets: damageText,
@@ -331,7 +330,7 @@ class Enemy {
     }
 
     kill() {
-        if (this.hp > 0) return; // Ensure the enemy is actually dead
+        if (this.hp > 0) return;
 
         console.log('Enemy killed');
         const dx = this.scene.player.tileOn.x - this.tileOn.x;
@@ -362,7 +361,7 @@ class Enemy {
                 onComplete: () => {
                     this.sprite.destroy();
                     this.scene.enemies = this.scene.enemies.filter(enemy => enemy !== this);
-                    this.scene.player.experience += this.experienceDropped; // Update player's experience
+                    this.scene.player.experience += this.experienceDropped;
                     
                 }
             });

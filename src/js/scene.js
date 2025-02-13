@@ -26,7 +26,7 @@ class GameScene extends Phaser.Scene {
     }
 
     init(data) {
-        this.difficulty = data.difficulty || 'normal'; // Initialize difficulty
+        this.difficulty = data.difficulty || 'normal';
     }
 
     preload() {
@@ -38,28 +38,28 @@ class GameScene extends Phaser.Scene {
         const bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
         bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
-        this.enemies = []; // Initialize enemies array
+        this.enemies = [];
 
         const player = new Player(this);
-        this.player = player; // Make player accessible in the scene
+        this.player = player;
         console.log(player);
 
         loadAnimations(this);
         const tiles = loadTiles(this);
 
         const playerSprite = this.add.sprite(TILE_CONFIG.centerx - TILE_CONFIG.xoffset * 0.5, TILE_CONFIG.centery + TILE_CONFIG.yoffset + this.tileOffset, 'playerIdle'); // Spawn player on the center tile with offset
-        playerSprite.setScale(2); // Scale the player sprite upwards
-        playerSprite.play('idleDown'); // Set initial idle animation to looking down
-        this.playerSprite = playerSprite; // Make player sprite accessible in the scene
-        this.playerSprite.setDepth(1); // Ensure player sprite is above the tiles
+        playerSprite.setScale(2);
+        playerSprite.play('idleDown');
+        this.playerSprite = playerSprite;
+        this.playerSprite.setDepth(1);
 
         // Set the player's initial tile to the bottom left of the center tile
         const initialTile = tiles.find(tile => tile.x === 650 - 65 / 2 && tile.y === 400 + 54);
         this.player.moveToTile(initialTile);
 
-        this.add.image(this.sys.game.config.width - 110, 110, 'greyBox').setScale(1.5); // Spawn the grey box in the middle-right of the screen
+        this.add.image(this.sys.game.config.width - 110, 110, 'greyBox').setScale(1.5);
 
-        this.add.image(this.sys.game.config.width - 110, 310, 'greyBox').setScale(1.5); // Spawn the grey box in the middle-right of the screen
+        this.add.image(this.sys.game.config.width - 110, 310, 'greyBox').setScale(1.5);
 
         this.waveText = this.add.bitmapText(this.sys.game.config.width - 110, 65, 'pixelfont', `Wave`, 28).setOrigin(0.5, 0.5);
         this.waveNumberText = this.add.bitmapText(this.sys.game.config.width - 110, 125, 'pixelfont', `${this.waveNumber}`, 72).setOrigin(0.5, 0.5);
@@ -68,10 +68,8 @@ class GameScene extends Phaser.Scene {
         this.movesUntilNextWaveText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 95, 'pixelfont', `${this.movesUntilNextWave}`, 60).setOrigin(0.5, 0.5);
         this.movesTextMoves = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 55, 'pixelfont', 'moves', 24).setOrigin(0.5, 0.5);
 
-        // Add brownBox to the top left
         this.add.image(110, 110, 'brownBox').setScale(1.5).setOrigin(0.5, 0.5);
 
-        // Add pairs of roundDamagedBrown and brownButton below the brownBox
         const icons = ['healthIdle', 'staminaIdle', 'damage', 'range', 'speed', 'experience'];
         const statTexts = [];
         for (let i = 0; i < 6; i++) {
@@ -84,7 +82,6 @@ class GameScene extends Phaser.Scene {
                 .setInteractive()
                 .setData('tooltip', this.tooltipText[icons[i]]);
 
-            // Add tooltip behavior
             sprite.on('pointerover', function () {
                 const tooltipText = this.getData('tooltip');
                 const tooltipBg = this.scene.add.graphics()
@@ -93,9 +90,9 @@ class GameScene extends Phaser.Scene {
                     .fillRoundedRect(
                         this.x + 25,
                         this.y - 10,
-                        tooltipText.length * 9.5, // Adjust width based on text length
-                        20, // Height
-                        5  // Corner radius
+                        tooltipText.length * 9.5,
+                        20, 
+                        5  
                     );
 
                 const tooltip = this.scene.add.bitmapText(
@@ -151,17 +148,13 @@ class GameScene extends Phaser.Scene {
 
         this.statTexts = statTexts;
 
-        //Add bannerHanging to the top middle
         this.add.image(this.sys.game.config.width / 2, 50, 'bannerHanging').setScale(0.6).setOrigin(0.5, 0.5);
-        // Add text indicating who's turn it is in the banner
         this.turnText = this.add.bitmapText(this.sys.game.config.width / 2, 56, 'pixelfont', 'Player\'s turn', 24).setOrigin(0.5, 0.5);
 
-        // Add decorative player object
         const decorativePlayer = this.add.sprite(110, 110, 'playerIdle');
         decorativePlayer.setScale(3);
         decorativePlayer.play('idleDown');
 
-        // Copy any of the animations the player does
         this.playerSprite.on('animationupdate', (animation, frame) => {
             decorativePlayer.play(animation.key, true);
         });
@@ -169,9 +162,8 @@ class GameScene extends Phaser.Scene {
         this.spawnEnemies();
         this.changeRandomTileToMagical();
 
-        this.gameOver = this.gameOver.bind(this); // Bind gameOver method to the scene
+        this.gameOver = this.gameOver.bind(this);
 
-        // Listen for player move events
         this.events.on('playerMove', this.onPlayerMove, this);
 
         this.manual = this.add.image(110, this.sys.game.config.height - 100, 'book').setScale(0.75).setInteractive();
@@ -203,8 +195,8 @@ class GameScene extends Phaser.Scene {
     }
 
     showManual() {
-        this.scene.pause(); // Pause the game scene
-        this.scene.launch('ManualScene'); // Launch the manual scene
+        this.scene.pause();
+        this.scene.launch('ManualScene');
     }
 
     showHelp() {
@@ -213,8 +205,8 @@ class GameScene extends Phaser.Scene {
     }
 
     resetGame() {
-        this.waveNumber = 1; // Reset wave number
-        this.movesUntilNextWave = 5; // Reset moves required to trigger the next wave
+        this.waveNumber = 1; 
+        this.movesUntilNextWave = 5; 
     }
 
     update() {
@@ -359,7 +351,7 @@ class GameScene extends Phaser.Scene {
             duration: 1000
         });
 
-        this.player.experience = 0; // Reset experience on game over
+        this.player.experience = 0;
     }
 }
 

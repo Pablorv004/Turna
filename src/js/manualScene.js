@@ -82,7 +82,7 @@ class ManualScene extends Phaser.Scene {
             }
             rowNum = rowNum + 1;
             const icon = this.add.image(620 + rowNum * 71, 245 + row * 55, tile.key).setScale(0.4).setInteractive();
-            icon.setDepth(3); // Set depth
+            icon.setDepth(3);
             icon.on('pointerdown', () => {
                 this.showTileDescription(tile);
             });
@@ -99,11 +99,11 @@ class ManualScene extends Phaser.Scene {
         }
         this.descriptionText = this.add.bitmapText(this.sys.game.config.width / 2 - 180, this.sys.game.config.height / 2 - 115, 'pixelfont', slime.description, 18);
         this.descriptionText.setOrigin(0.5);
-        this.descriptionText.setDepth(3); // Set depth
+        this.descriptionText.setDepth(3);
 
         this.selectedEnemy = this.add.sprite(this.sys.game.config.width / 2 - 67, this.sys.game.config.height / 2 - 117, slime.key).setScale(2);
         this.selectedEnemy.play(slime.animation);
-        this.selectedEnemy.setDepth(4); // Set depth
+        this.selectedEnemy.setDepth(4);
     }
 
     showTileDescription(tile) {
@@ -115,10 +115,10 @@ class ManualScene extends Phaser.Scene {
         }
         this.tileDescriptionText = this.add.bitmapText(this.sys.game.config.width / 2 + 180, this.sys.game.config.height / 2 - 115, 'pixelfont', tile.description, 14);
         this.tileDescriptionText.setOrigin(0.5);
-        this.tileDescriptionText.setDepth(3); // Set depth
+        this.tileDescriptionText.setDepth(3);
 
         this.selectedTile = this.add.image(this.sys.game.config.width / 2 + 68, this.sys.game.config.height / 2 - 125, tile.image).setScale(0.6);
-        this.selectedTile.setDepth(4); // Set depth
+        this.selectedTile.setDepth(4);
     }
 
     closeManual() {
@@ -136,14 +136,14 @@ class ManualScene extends Phaser.Scene {
         }
         this.slimeIcons.forEach(icon => icon.destroy());
         this.tileIcons.forEach(icon => icon.destroy());
-        this.manualSprite.anims.playReverse('manual_open'); // Play reverse animation
+        this.manualSprite.anims.playReverse('manual_open');
         this.manualSprite.on('animationcomplete', () => {
             this.overlay.destroy();
             this.manualSprite.destroy();
             this.closeButton.destroy();
             
-            this.scene.stop(); // Stop the manual scene
-            this.scene.resume('GameScene'); // Resume the game scene
+            this.scene.stop();
+            this.scene.resume('GameScene');
         });
     }
 }

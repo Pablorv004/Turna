@@ -45,7 +45,7 @@ class Tile {
                         y: this.sprite.y + 5,
                         duration: 100,
                         onComplete: () => {
-                            this.setProperties(0); // Revert to grass tile
+                            this.setProperties(0);
                             this.sprite.setTexture('grass');
                             this.scene.tweens.add({
                                 targets: this.sprite,
@@ -99,9 +99,9 @@ class Tile {
     }
 
     applyEffect() {
-        if (this.scene.player.isMoving) return; // Do nothing if the player is moving
+        if (this.scene.player.isMoving) return;
 
-        if (this.scene.player.tileOn === this) return; // Do nothing if the player is already on this tile
+        if (this.scene.player.tileOn === this) return;
 
         const enemy = this.scene.enemies.find(enemy => enemy.tileOn === this);
         if (enemy) {
@@ -123,15 +123,15 @@ class Tile {
     }
 
     spawnRandomDecoration() {
-        if (Math.random() < 0.5) { // 50% chance to spawn decorations
+        if (Math.random() < 0.5) {
             const decorations = this.getDecorationsForType(this.type);
-            const numDecorations = Phaser.Math.Between(0, 1); // Randomly choose between 1 and 2 decorations
+            const numDecorations = Phaser.Math.Between(0, 1);
             for (let i = 0; i < numDecorations; i++) {
                 const decoration = decorations[Phaser.Math.Between(0, decorations.length - 1)];
                 const offsetX = Phaser.Math.Between(-10, 10);
                 const offsetY = Phaser.Math.Between(-8, 8);
                 const sprite = this.scene.add.sprite(this.x + offsetX, this.y + offsetY, decoration);
-                sprite.setDepth(0); // Ensure decoration is below the player and enemies
+                sprite.setDepth(0);
                 this.decorations.push(sprite);
                 if (decoration.startsWith('wave')) {
                     this.scene.tweens.add({

@@ -27,7 +27,7 @@ class BaseSlime extends Enemy {
             deathUp: 'slimeDeathUp',
             deathLeft: 'slimeDeathLeft',
             deathRight: 'slimeDeathRight',
-            experienceDropped: 5 // Experience dropped by BaseSlime
+            experienceDropped: 5 
         });
     }
 }

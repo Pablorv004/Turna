@@ -27,7 +27,7 @@ class MagmaSlime extends Enemy {
             deathUp: 'magmaSlimeDeathUp',
             deathLeft: 'magmaSlimeDeathLeft',
             deathRight: 'magmaSlimeDeathRight',
-            experienceDropped: 20 // Experience dropped by MagmaSlime
+            experienceDropped: 20
         });
     }
 }

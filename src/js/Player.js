@@ -108,7 +108,6 @@ class Player {
         this.hp -= amount;
         console.log(`Player took ${amount} damage, ${this.hp} HP left`);
 
-        // Display damage indicator
         const damageText = this.scene.add.bitmapText(this.scene.playerSprite.x, this.scene.playerSprite.y - 20, 'numbers_red', `-${amount}`, 24).setOrigin(0.5, 0.5);
         this.scene.tweens.add({
             targets: damageText,
@@ -154,7 +153,7 @@ class Player {
     }
 
     moveToTile(tile) {
-        if (this.isMoving) return; // Do nothing if the player is already moving
+        if (this.isMoving) return;
 
         if (!this.tileOn) {
             this.tileOn = tile;
@@ -185,8 +184,8 @@ class Player {
             }
         }
 
-        this.isMoving = true; // Set the moving flag to true
-        this.scene.input.enabled = false; // Disable input
+        this.isMoving = true;
+        this.scene.input.enabled = false; 
 
         this.scene.tweens.add({
             targets: this.scene.playerSprite,
@@ -196,11 +195,11 @@ class Player {
             onComplete: () => {
                 this.setIdleAnimation();
                 this.tileOn = tile;
-                this.isMoving = false; // Reset the moving flag
-                this.attackCount = 1; // Reset the attack counter
-                this.scene.input.enabled = true; // Enable input
+                this.isMoving = false; 
+                this.attackCount = 1; 
+                this.scene.input.enabled = true;
                 console.log(`Player moved to ${tile.type} tile`);
-                this.scene.events.emit('playerMove'); // Emit player move event
+                this.scene.events.emit('playerMove');
                 this.scene.enemies.forEach(enemy => enemy.moveTowardsPlayer(this.scene.player.tileOn, this.scene.tiles));
             }
         });
@@ -224,8 +223,8 @@ class Player {
     }
 
     attackTile(tile) {
-        if (this.isMoving || this.attackCount < 1) return; // Do nothing if the player is already moving or has attacked
-        if(!this.canInteractWithTile(tile, this.scene.tiles)) return; // Do nothing if the player cannot interact with the tile
+        if (this.isMoving || this.attackCount < 1) return;
+        if(!this.canInteractWithTile(tile, this.scene.tiles)) return;
         const dx = tile.x - this.tileOn.x;
         const dy = tile.y - this.tileOn.y;
 
@@ -247,7 +246,7 @@ class Player {
             }
         }
 
-        this.isMoving = true; // Set the moving flag to true
+        this.isMoving = true;
 
         this.scene.time.delayedCall(400, () => {
             const enemies = this.scene.enemies.filter(enemy => enemy.tileOn === tile);
@@ -258,19 +257,19 @@ class Player {
 
         this.scene.playerSprite.once('animationcomplete', () => {
             this.setIdleAnimation();
-            this.isMoving = false; // Reset the moving flag
-            this.attackCount--; // Increment the attack counter
+            this.isMoving = false;
+            this.attackCount--;
 
-            // Check if the player has nowhere to move
+            
             const canMove = this.scene.tiles.some(tile => this.canInteractWithTile(tile, this.scene.tiles));
             if (!canMove) {
-                this.scene.events.emit('playerMove'); // Emit player move event to skip turn
+                this.scene.events.emit('playerMove');
             }
         });
     }
 
     canInteractWithTile(tile, tiles) {
-        if (!this.tileOn) return true; // Allow initial move
+        if (!this.tileOn) return true;
 
         const xoffset = TILE_CONFIG.xoffset;
         const yoffset = TILE_CONFIG.yoffset;

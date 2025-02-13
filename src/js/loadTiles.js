@@ -97,11 +97,10 @@ export function loadTiles(scene) {
         new Tile(scene, centerx - xoffset * 3, centery + yoffset * 6, 0),
     ];
 
-    scene.tiles = tiles; // Store tiles array in the scene
+    scene.tiles = tiles;
 
-    // Add fade-in effect to tiles
     tiles.forEach((tile, index) => {
-        tile.sprite.alpha = 0; // Set initial alpha to 0 for fade-in effect
+        tile.sprite.alpha = 0;
         scene.time.delayedCall(index, () => {
             scene.tweens.add({
                 targets: tile.sprite,
