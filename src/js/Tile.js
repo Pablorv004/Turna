@@ -37,6 +37,7 @@ class Tile {
             case 3: this.effect = () => console.log('Obstructed tile'); break;
             case 4:
                 this.effect = () => {
+                    if(this !== this.scene.player.tileOn) return;
                     console.log('Magical tile');
                     this.scene.player.damage += 3;
                     this.scene.tweens.add({
