@@ -164,6 +164,10 @@ class GameScene extends Phaser.Scene {
 
         this.gameOver = this.gameOver.bind(this);
 
+        // Remove existing event listeners to avoid duplication
+        this.events.off('playerMove', this.onPlayerMove, this);
+
+        // Add event listeners
         this.events.on('playerMove', this.onPlayerMove, this);
 
         this.manual = this.add.image(110, this.sys.game.config.height - 100, 'book').setScale(0.75).setInteractive();
@@ -207,6 +211,7 @@ class GameScene extends Phaser.Scene {
     resetGame() {
         this.waveNumber = 1; 
         this.movesUntilNextWave = 5; 
+        
     }
 
     update() {
@@ -335,18 +340,31 @@ class GameScene extends Phaser.Scene {
         const retryButton = this.add.sprite(width / 2, height / 2 + 50, 'playButton', 3).setInteractive();
         const retryText = this.add.bitmapText(width / 2 - 23, height / 2 + 40, 'pixelfont', 'Retry', 20);
         retryButton.on('pointerdown', () => {
-            this.scene.restart();
+            this.scene.stop('GameScene');
+            this.scene.start('GameScene');
         });
 
         // Add Main Menu button
         const mainMenuButton = this.add.sprite(width / 2, height / 2 + 100, 'playButton', 1).setInteractive();
         const mainMenuText = this.add.bitmapText(width / 2 - 50, height / 2 + 90, 'pixelfont', 'Main Menu', 20);
         mainMenuButton.on('pointerdown', () => {
+            this.scene.stop('GameScene');
             this.scene.start('MainMenu');
         });
 
         this.tweens.add({
             targets: [retryButton, retryText, mainMenuButton, mainMenuText],
+            alpha: 1,
+            duration: 1000
+        });
+
+        // Add Experience Earned text
+        const experienceText = this.add.bitmapText(width / 2, height / 2 + 150, 'pixelfont', `Experience Earned: ${this.player.experience}`, 20);
+        experienceText.setOrigin(0.5, 0.5);
+        experienceText.alpha = 0;
+
+        this.tweens.add({
+            targets: experienceText,
             alpha: 1,
             duration: 1000
         });

@@ -12,7 +12,7 @@ class Enemy {
         this.jumpDistance = textures.jumpDistance;
         this.isMovingToTile = null;
         this.sprite = null;
-        this.experienceDropped = textures.experienceDropped; // Experience dropped by the enemy
+        this.experienceDropped = textures.experienceDropped;
     }
 
     spawn() {
