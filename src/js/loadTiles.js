@@ -101,11 +101,11 @@ export function loadTiles(scene) {
     // Add fade-in effect to tiles
     tiles.forEach((tile, index) => {
         tile.sprite.alpha = 0; // Set initial alpha to 0 for fade-in effect
-        scene.time.delayedCall(index * 2, () => {
+        scene.time.delayedCall(index, () => {
             scene.tweens.add({
                 targets: tile.sprite,
                 alpha: 1,
-                duration: 500
+                duration: 150
             });
         });
     });

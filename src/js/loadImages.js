@@ -65,6 +65,7 @@ export function loadImages(scene) {
     scene.load.spritesheet('manual_open', 'assets/Icons/manual_open.png', { frameWidth: 640/4, frameHeight: 90 });
     scene.load.image('help', 'assets/Icons/help.png');
     scene.load.image('roundDamagedBrown', 'assets/Icons/round_damaged_brown.png');
+    scene.load.image('panel_blue', 'assets/Icons/panel_blue.png');
 
     //FONTS
     scene.load.bitmapFont('pixelfont', 'assets/fonts/minogram_6x10.png', 'assets/fonts/minogram_6x10.xml');

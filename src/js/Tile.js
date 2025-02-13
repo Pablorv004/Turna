@@ -125,7 +125,7 @@ class Tile {
     spawnRandomDecoration() {
         if (Math.random() < 0.5) { // 50% chance to spawn decorations
             const decorations = this.getDecorationsForType(this.type);
-            const numDecorations = Phaser.Math.Between(0, 2); // Randomly choose between 1 and 2 decorations
+            const numDecorations = Phaser.Math.Between(0, 1); // Randomly choose between 1 and 2 decorations
             for (let i = 0; i < numDecorations; i++) {
                 const decoration = decorations[Phaser.Math.Between(0, decorations.length - 1)];
                 const offsetX = Phaser.Math.Between(-10, 10);

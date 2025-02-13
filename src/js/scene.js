@@ -8,11 +8,20 @@ import MagmaSlime from './MagmaSlime.js';
 import SkullSlime from './SkullSlime.js';
 import MainMenu from './mainMenu.js';
 import { getWaveEnemies } from './WaveEnemies.js';
+import HelpScene from './helpScene.js';
 
 class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
         this.tileOffset = -25; // Constant to store the y value offset for the player and enemies
+        this.tooltipText = {
+            healthIdle: 'Health Points - Your remaining life',
+            staminaIdle: 'Stamina - Attacks per turn',
+            damage: 'Damage - Power of your attacks',
+            range: 'Range - How far you can move or attack',
+            speed: 'Speed - Additional moves per turn',
+            experience: 'Experience - Points earned from kills'
+        };
     }
 
     init(data) {
@@ -53,9 +62,10 @@ class GameScene extends Phaser.Scene {
 
         this.waveText = this.add.bitmapText(this.sys.game.config.width - 110, 65, 'pixelfont', `Wave`, 28).setOrigin(0.5, 0.5);
         this.waveNumberText = this.add.bitmapText(this.sys.game.config.width - 110, 125, 'pixelfont', `${this.waveNumber}`, 72).setOrigin(0.5, 0.5);
-        this.movesText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 220, 'pixelfont', 'Next wave in', 20).setOrigin(0.5, 0.5);
-        this.movesUntilNextWaveText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 165, 'pixelfont', `${this.movesUntilNextWave}`, 60).setOrigin(0.5, 0.5);
-        this.movesTextMoves = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 125, 'pixelfont', 'moves', 24).setOrigin(0.5, 0.5);
+
+        this.movesText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 150, 'pixelfont', 'Next wave in', 20).setOrigin(0.5, 0.5);
+        this.movesUntilNextWaveText = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 95, 'pixelfont', `${this.movesUntilNextWave}`, 60).setOrigin(0.5, 0.5);
+        this.movesTextMoves = this.add.bitmapText(this.sys.game.config.width - 110, this.sys.game.config.height / 2 - 55, 'pixelfont', 'moves', 24).setOrigin(0.5, 0.5);
 
         // Add brownBox to the top left
         this.add.image(110, 110, 'brownBox').setScale(1.5).setOrigin(0.5, 0.5);
@@ -67,7 +77,44 @@ class GameScene extends Phaser.Scene {
             this.add.image(50, 270 + i * 70, 'roundDamagedBrown').setScale(0.5).setOrigin(0.5, 0.5);
             this.add.image(150, 270 + i * 70, 'brownButton').setScale(1).setOrigin(0.5, 0.5);
             const scale = (icons[i] === 'healthIdle' || icons[i] === 'staminaIdle') ? 2.25 : 0.5;
-            const sprite = this.add.sprite(50, 270 + i * 70, icons[i]).setScale(scale).setOrigin(0.5, 0.5);
+            const sprite = this.add.sprite(50, 270 + i * 70, icons[i])
+                .setScale(scale)
+                .setOrigin(0.5, 0.5)
+                .setInteractive()
+                .setData('tooltip', this.tooltipText[icons[i]]);
+
+            // Add tooltip behavior
+            sprite.on('pointerover', function () {
+                const tooltipText = this.getData('tooltip');
+                const tooltipBg = this.scene.add.graphics()
+                    .setDepth(100)
+                    .fillStyle(0x333333, 0.8)
+                    .fillRoundedRect(
+                        this.x + 25,
+                        this.y - 10,
+                        tooltipText.length * 9.5, // Adjust width based on text length
+                        20, // Height
+                        5  // Corner radius
+                    );
+
+                const tooltip = this.scene.add.bitmapText(
+                    this.x + 30,
+                    this.y,
+                    'pixelfont',
+                    tooltipText,
+                    16
+                ).setOrigin(0, 0.5).setDepth(101); // Set depth higher than background
+
+                this.setData('tooltipObject', tooltip);
+                this.setData('tooltipBg', tooltipBg);
+            });
+
+            sprite.on('pointerout', function () {
+                const tooltip = this.getData('tooltipObject');
+                const tooltipBg = this.getData('tooltipBg');
+                if (tooltip) tooltip.destroy();
+                if (tooltipBg) tooltipBg.destroy();
+            });
 
             if (icons[i] === 'healthIdle') {
                 this.healthSprite = sprite;
@@ -126,15 +173,19 @@ class GameScene extends Phaser.Scene {
         // Listen for player move events
         this.events.on('playerMove', this.onPlayerMove, this);
 
-        this.manual = this.add.image(110, this.sys.game.config.height - 270, 'book').setScale(0.75).setInteractive();
-        this.help = this.add.image(50, this.sys.game.config.height - 120, 'help').setScale(1).setInteractive();
+        this.manual = this.add.image(110, this.sys.game.config.height - 100, 'book').setScale(0.75).setInteractive();
+        this.help = this.add.image(250, 50, 'help').setScale(1).setInteractive();
 
         this.manual.on('pointerdown', () => {
             this.showManual();
         });
 
-        this.skipTurnButton = this.add.sprite(this.sys.game.config.width / 2 - 25, this.sys.game.config.height - 120, 'whiteButton', 0).setInteractive();
-        this.skipTurnText = this.add.bitmapText(this.sys.game.config.width / 2 - 25, this.sys.game.config.height - 120, 'pixelfont', 'Skip turn', 20).setOrigin(0.5, 0.5).setTint(0x000000);
+        this.help.on('pointerdown', () => {
+            this.showHelp();
+        });
+
+        this.skipTurnButton = this.add.sprite(this.sys.game.config.width - 130, this.sys.game.config.height - 100, 'whiteButton', 0).setInteractive();
+        this.skipTurnText = this.add.bitmapText(this.sys.game.config.width - 130, this.sys.game.config.height - 100, 'pixelfont', 'Skip turn', 20).setOrigin(0.5, 0.5).setTint(0x000000);
         var canSkipTurn = true;
         this.skipTurnButton.on('pointerup', () => {
             if (canSkipTurn && this.player.hp > 0) {
@@ -153,6 +204,11 @@ class GameScene extends Phaser.Scene {
     showManual() {
         this.scene.pause(); // Pause the game scene
         this.scene.launch('ManualScene'); // Launch the manual scene
+    }
+
+    showHelp() {
+        this.scene.pause();
+        this.scene.launch('HelpScene');
     }
 
     resetGame() {

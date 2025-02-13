@@ -48,7 +48,8 @@ class ManualScene extends Phaser.Scene {
                 row = row + 1;
                 rowNum = 0;
             }
-            const icon = this.add.sprite(415 + index * 71, 318 + row * 55, slime.key).setScale(1.5).setInteractive();
+            const icon = this.add.sprite(415 + rowNum * 71, 248 + row * 55, slime.key).setScale(1.5).setInteractive();
+            rowNum = rowNum + 1;
             icon.play(slime.animation);
             icon.setDepth(3); // Set depth
             icon.on('pointerdown', () => {
@@ -80,7 +81,7 @@ class ManualScene extends Phaser.Scene {
                 rowNum = 0;
             }
             rowNum = rowNum + 1;
-            const icon = this.add.image(620 + rowNum * 71, 315 + row * 55, tile.key).setScale(0.4).setInteractive();
+            const icon = this.add.image(620 + rowNum * 71, 245 + row * 55, tile.key).setScale(0.4).setInteractive();
             icon.setDepth(3); // Set depth
             icon.on('pointerdown', () => {
                 this.showTileDescription(tile);
