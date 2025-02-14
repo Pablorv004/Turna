@@ -207,10 +207,7 @@ class Enemy {
                     y: this.tileOn.y + this.scene.tileOffset,
                     duration: 500,
                     onComplete: () => {
-                        
-                        if (this.scene.enemies.includes(this)) {
-                            this.sprite.play(idleAnimation);
-                        }
+                        this.sprite.play(idleAnimation);
                     }
                 });
             }

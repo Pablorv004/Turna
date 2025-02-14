@@ -296,7 +296,7 @@ class GameScene extends Phaser.Scene {
             this.tweens.add({
                 targets: enemy.sprite,
                 alpha: 0,
-                duration: 1000,
+                duration: 500,
                 onComplete: () => {
                     enemy.sprite.destroy();
                 }
