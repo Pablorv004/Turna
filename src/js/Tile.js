@@ -1,3 +1,5 @@
+import MagmaSlime from "./MagmaSlime.js";
+
 class Tile {
     constructor(scene, x, y, type) {
         this.scene = scene;
@@ -33,7 +35,19 @@ class Tile {
         switch (type) {
             case 0: this.effect = () => console.log('Grass tile'); break;
             case 1: this.effect = () => console.log('Frozen tile'); break;
-            case 2: this.effect = () => console.log('On fire tile'); break;
+            case 2: // Lava tile
+                this.effect = () => {
+                    if (this.scene.player.tileOn === this) {
+                        this.scene.player.takeDamage(2);
+                    }
+                    this.scene.enemies.forEach(enemy => {
+                        if (enemy.tileOn === this && !(enemy instanceof MagmaSlime)) {
+                            enemy.takeDamage(2);
+                        }
+                    });
+                    console.log('Lava tile');
+                };
+                break;
             case 3: this.effect = () => console.log('Obstructed tile'); break;
             case 4:
                 this.effect = () => {

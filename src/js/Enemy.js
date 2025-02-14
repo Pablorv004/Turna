@@ -1,4 +1,5 @@
 import { TILE_CONFIG } from './config.js';
+import MagmaSlime from './MagmaSlime.js';
 
 class Enemy {
     constructor(scene, tiles, textures) {
@@ -140,12 +141,12 @@ class Enemy {
                         x: neighbor.x,
                         y: neighbor.y,
                         path: [...path, neighbor],
-                        avoidLava: avoidLava || (tile.type === 2 && playerTile.type !== 2)
+                        avoidLava: avoidLava || (tile.type === 2 && playerTile.type !== 2 && !(this instanceof MagmaSlime))
                     });
                 }
             }
 
-            // Prioritize paths that avoid lava tiles unless the player is on a lava tile
+            // Prioritize paths that avoid lava tiles unless the player is on a lava tile or the enemy is a MagmaSlime
             queue.sort((a, b) => a.avoidLava - b.avoidLava);
         }
     }
@@ -239,8 +240,14 @@ class Enemy {
             this.hurt();
         }
 
-        
-        this.knockback();
+        // Only apply knockback if not hurt by lava
+        if (amount !== 2) {
+            this.knockback();
+        } else {
+            this.sprite.once('animationcomplete', () => {
+                this.sprite.play(this.textures.idleFront);
+            });
+        }
     }
 
     hurt() {

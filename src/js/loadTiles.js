@@ -71,13 +71,13 @@ export function loadTiles(scene) {
         new Tile(scene, centerx + xoffset * 2.5, centery + yoffset, 0),
         new Tile(scene, centerx + xoffset * 3.5, centery + yoffset, 0),
 
-        //Bottom middle triangle (rock tiles)
-        new Tile(scene, centerx - xoffset * 0.5, centery + yoffset * 3, 0),
-        new Tile(scene, centerx - xoffset, centery + yoffset * 4, 0),
-        new Tile(scene, centerx, centery + yoffset * 4, 0),
-        new Tile(scene, centerx - xoffset * 1.5, centery + yoffset * 5, 0),
-        new Tile(scene, centerx - xoffset * 0.5, centery + yoffset * 5, 0),
-        new Tile(scene, centerx + xoffset * 0.5, centery + yoffset * 5, 0),
+        //Bottom middle triangle (lava tiles)
+        new Tile(scene, centerx - xoffset * 0.5, centery + yoffset * 3, 2),
+        new Tile(scene, centerx - xoffset, centery + yoffset * 4, 2),
+        new Tile(scene, centerx, centery + yoffset * 4, 2),
+        new Tile(scene, centerx - xoffset * 1.5, centery + yoffset * 5, 2),
+        new Tile(scene, centerx - xoffset * 0.5, centery + yoffset * 5, 2),
+        new Tile(scene, centerx + xoffset * 0.5, centery + yoffset * 5, 2),
 
         //Outer hexagon (bottom)
         //This will surround the branches with the same offsets with a hollow tile hexagon
