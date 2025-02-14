@@ -3,20 +3,20 @@ import { TILE_CONFIG } from './config.js';
 class Player {
     constructor(scene) {
         this.scene = scene;
-        this._damage = 5; // Default damage points
-        this.tileOn = null; // Property to track the tile the player is standing on
-        this._range = 1; // Default jump distance
-        this.isMoving = false; // Flag to track if the player is moving
-        this._attackCount = 1; // Counter to track the number of attacks
-        this._hp = 10; // Player's health points
-        this.lastDirection = 'down'; // Track the last direction the player walked
-        this._experience = 0; // Player's experience points
-        this._speed = 1; // Player's speed
+        this._damage = 5;  
+        this.tileOn = null;
+        this._range = 1
+        this.isMoving = false;
+        this._attackCount = 1;
+        this._hp = 10; 
+        this.lastDirection = 'down';
+        this._experience = 0; 
+        this._speed = 1
     }
 
     set hp(value) {
         const diff = value - this._hp;
-        this._hp = Math.max(value, 0); // Ensure HP does not go below 0
+        this._hp = Math.max(value, 0);
         this.updateStatText(0, diff);
         if (diff > 0) {
             this.scene.healthSprite.play('healthAdd');

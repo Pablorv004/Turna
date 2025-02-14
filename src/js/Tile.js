@@ -7,7 +7,7 @@ class Tile {
         this.y = y;
         this.type = type;
         this.sprite = this.scene.add.sprite(x, y, this.getTexture(type));
-        this.decorations = []; // Initialize decorations array
+        this.decorations = [];
         this.setProperties(type);
         this.sprite.setInteractive();
         this.sprite.on('pointerdown', () => this.applyEffect());
@@ -35,7 +35,7 @@ class Tile {
         switch (type) {
             case 0: this.effect = () => console.log('Grass tile'); break;
             case 1: this.effect = () => console.log('Frozen tile'); break;
-            case 2: // Lava tile
+            case 2: 
                 this.effect = () => {
                     if (this.scene.player.tileOn === this) {
                         this.scene.player.takeDamage(2);
@@ -99,7 +99,7 @@ class Tile {
                 'numbers_red',
                 '+',
                 24
-            ).setOrigin(0.5, 0.5);
+            ).setOrigin(0.5, 0.5).setDepth(2);
 
             this.scene.tweens.add({
                 targets: indicator,
